@@ -10,7 +10,6 @@ package me.xanium.gemseconomy.utils;
 
 import com.google.common.collect.Lists;
 import me.xanium.gemseconomy.file.F;
-import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
 import java.text.DecimalFormat;
@@ -47,7 +46,7 @@ public class UtilString {
     }
 
     public static String colorize(String string){
-        return ChatColor.translateAlternateColorCodes('&', string);
+        return string.replace('&', '§');
     }
 
     public static List<String> colorize(List<String> message){

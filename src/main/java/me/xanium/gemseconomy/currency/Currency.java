@@ -9,7 +9,7 @@
 package me.xanium.gemseconomy.currency;
 
 import me.xanium.gemseconomy.utils.UtilString;
-import org.bukkit.ChatColor;
+import net.kyori.adventure.text.format.NamedTextColor;
 
 import java.text.NumberFormat;
 import java.util.UUID;
@@ -20,7 +20,7 @@ public class Currency {
     private String singular;
     private String plural;
     private String symbol = null;
-    private ChatColor color = ChatColor.WHITE;
+    private NamedTextColor color = NamedTextColor.WHITE;
     private boolean decimalSupported = true;
     private boolean payable = true;
     private boolean defaultCurrency = false;
@@ -109,11 +109,11 @@ public class Currency {
         this.decimalSupported = decimalSupported;
     }
 
-    public ChatColor getColor() {
+    public NamedTextColor getColor() {
         return this.color;
     }
 
-    public void setColor(ChatColor color) {
+    public void setColor(NamedTextColor color) {
         this.color = color;
     }
 

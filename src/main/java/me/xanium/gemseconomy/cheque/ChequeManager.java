@@ -12,6 +12,8 @@ import me.xanium.gemseconomy.GemsEconomy;
 import me.xanium.gemseconomy.currency.Currency;
 import me.xanium.gemseconomy.nbt.NBTItem;
 import me.xanium.gemseconomy.utils.UtilString;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -19,22 +21,23 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class ChequeManager {
 
     private final GemsEconomy plugin;
     private final ItemStack chequeBaseItem;
-    private String nbt_issuer = "issuer";
-    private String nbt_value = "value";
-    private String nbt_currency = "currency";
+    private final String nbt_issuer = "issuer";
+    private final String nbt_value = "value";
+    private final String nbt_currency = "currency";
 
     public ChequeManager(GemsEconomy plugin) {
         this.plugin = plugin;
 
         ItemStack item = new ItemStack(Material.valueOf(plugin.getConfig().getString("cheque.material")), 1);
         ItemMeta meta = item.getItemMeta();
-        meta.setDisplayName(UtilString.colorize(plugin.getConfig().getString("cheque.name")));
-        meta.setLore(UtilString.colorize(plugin.getConfig().getStringList("cheque.lore")));
+        meta.displayName(LegacyComponentSerializer.legacyAmpersand().deserialize(UtilString.colorize(plugin.getConfig().getString("cheque.name"))));
+        meta.lore(plugin.getConfig().getStringList("cheque.lore").stream().map(line -> LegacyComponentSerializer.legacyAmpersand().deserialize(UtilString.colorize(line))).collect(Collectors.toList()));
         item.setItemMeta(meta);
         chequeBaseItem = item;
     }
@@ -46,15 +49,15 @@ public class ChequeManager {
         if (creatorName.equals("CONSOLE")) {
             creatorName = UtilString.colorize(plugin.getConfig().getString("cheque.console_name"));
         }
-        List<String> formatLore = new ArrayList<>();
+        List<Component> formatLore = new ArrayList<>();
 
-        for (String baseLore2 : Objects.requireNonNull(chequeBaseItem.getItemMeta().getLore())) {
-            formatLore.add(baseLore2.replace("{value}", currency.format(amount)).replace("{player}", creatorName));
+        for (Component baseLore2 : Objects.requireNonNull(chequeBaseItem.getItemMeta().lore())) {
+            formatLore.add(LegacyComponentSerializer.legacyAmpersand().deserialize(LegacyComponentSerializer.legacyAmpersand().serialize(baseLore2).replace("{value}", currency.format(amount)).replace("{player}", creatorName)));
         }
         ItemStack ret = chequeBaseItem.clone();
         NBTItem nbt = new NBTItem(ret);
         ItemMeta meta = nbt.getItem().getItemMeta();
-        meta.setLore(formatLore);
+        meta.lore(formatLore);
         nbt.getItem().setItemMeta(meta);
         nbt.setString(nbt_issuer, creatorName);
         nbt.setString(nbt_currency, currency.getPlural());
@@ -66,13 +69,13 @@ public class ChequeManager {
         if(itemstack.getItem().getType() != chequeBaseItem.getType())return false;
         if (itemstack.getString(nbt_value) != null && itemstack.getString(nbt_currency) != null && itemstack.getString(nbt_issuer) != null) {
 
-            String display = chequeBaseItem.getItemMeta().getDisplayName();
+            Component display = chequeBaseItem.getItemMeta().displayName();
             ItemMeta meta = itemstack.getItem().getItemMeta();
 
             if(meta == null) return false;
 
-            if(meta.hasDisplayName() && meta.getDisplayName().equals(display)){
-                if(meta.hasLore() && meta.getLore().size() == chequeBaseItem.getItemMeta().getLore().size()){
+            if(meta.hasDisplayName() && meta.displayName().equals(display)){
+                if(meta.hasLore() && meta.lore().size() == chequeBaseItem.getItemMeta().lore().size()){
                     return true;
                 }
             }

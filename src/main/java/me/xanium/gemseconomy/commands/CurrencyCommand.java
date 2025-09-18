@@ -28,8 +28,8 @@ import me.xanium.gemseconomy.file.F;
 import me.xanium.gemseconomy.utils.SchedulerUtils;
 import me.xanium.gemseconomy.utils.UtilServer;
 import me.xanium.gemseconomy.utils.UtilString;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -78,12 +78,12 @@ public class CurrencyCommand implements CommandExecutor {
                         if (currency != null) {
                             sender.sendMessage(F.getPrefix() + "§7ID: §c" + currency.getUuid().toString());
                             sender.sendMessage(F.getPrefix() + "§7Singular: §a" + currency.getSingular() + "§7, Plural: §a" + currency.getPlural());
-                            sender.sendMessage(F.getPrefix() + "§7Start Balance: " + currency.getColor() + currency.format(currency.getDefaultBalance()) + "§7.");
+                            sender.sendMessage(F.getPrefix() + "§7Start Balance: §f" + currency.format(currency.getDefaultBalance()));
                             sender.sendMessage(F.getPrefix() + "§7Decimals: " + (currency.isDecimalSupported() ? "§aYes" : "§cNo"));
                             sender.sendMessage(F.getPrefix() + "§7Default: " + (currency.isDefaultCurrency() ? "§aYes" : "§cNo"));
                             sender.sendMessage(F.getPrefix() + "§7Payable: " + (currency.isPayable() ? "§aYes" : "§cNo"));
-                            sender.sendMessage(F.getPrefix() + "§7Color: " + currency.getColor() + currency.getColor().name());
-                            sender.sendMessage(F.getPrefix() + "§7Rate: " + currency.getColor() + currency.getExchangeRate());
+                            sender.sendMessage(F.getPrefix() + "§7Color: §f" + currency.getColor().toString());
+                            sender.sendMessage(F.getPrefix() + "§7Rate: §f" + currency.getExchangeRate());
                         } else {
                             sender.sendMessage(F.getUnknownCurrency());
                         }
@@ -132,15 +132,12 @@ public class CurrencyCommand implements CommandExecutor {
                     if (args.length == 3) {
                         Currency currency = plugin.getCurrencyManager().getCurrency(args[1]);
                         if (currency != null) {
-                            try {
-                                ChatColor color = ChatColor.valueOf(args[2].toUpperCase());
-                                if (color.isFormat()) {
-                                    throw new Exception();
-                                }
+                            NamedTextColor color = NamedTextColor.NAMES.value(args[2].toLowerCase());
+                            if (color != null) {
                                 currency.setColor(color);
-                                sender.sendMessage(F.getPrefix() + "§7Color for §f" + currency.getPlural() + " §7updated: " + color + color.name());
+                                sender.sendMessage(F.getPrefix() + "§7Color for §f" + currency.getPlural() + " §7updated: §f" + color);
                                 plugin.getDataStore().saveCurrency(currency);
-                            } catch (Exception ex) {
+                            } else {
                                 sender.sendMessage(F.getPrefix() + "§cInvalid chat color.");
                             }
                         } else {
@@ -150,22 +147,7 @@ public class CurrencyCommand implements CommandExecutor {
                         sender.sendMessage(F.getCurrencyUsage_Color());
                     }
                 } else if (cmd.equalsIgnoreCase("colorlist")) {
-                    sender.sendMessage("§0§lBLACK §7= black");
-                    sender.sendMessage("§1§lDARK BLUE §7= dark_blue");
-                    sender.sendMessage("§2§lDARK GREEN §7= dark_green");
-                    sender.sendMessage("§3§lDARK AQUA §7= dark_aqua");
-                    sender.sendMessage("§4§lDARK RED §7= dark_red");
-                    sender.sendMessage("§5§lDARK PURPLE §7= dark_purple");
-                    sender.sendMessage("§6§lGOLD §7= gold");
-                    sender.sendMessage("§7§lGRAY §7= gray");
-                    sender.sendMessage("§8§lDARK GRAY §7= dark_gray");
-                    sender.sendMessage("§9§lBLUE §7= blue");
-                    sender.sendMessage("§a§lGREEN §7= green");
-                    sender.sendMessage("§b§lAQUA §7= aqua");
-                    sender.sendMessage("§c§lRED §7= red");
-                    sender.sendMessage("§d§lLIGHT PURPLE §7= light_purple");
-                    sender.sendMessage("§e§lYELLOW §7= yellow");
-                    sender.sendMessage("§f§lWHITE §7= white|reset");
+                    sender.sendMessage(String.join(", ", NamedTextColor.NAMES.keys()));
                 } else if (cmd.equalsIgnoreCase("symbol")) {
                     if (args.length == 3) {
                         Currency currency = plugin.getCurrencyManager().getCurrency(args[1]);
@@ -263,7 +245,7 @@ public class CurrencyCommand implements CommandExecutor {
                             }
                             currency.setExchangeRate(amount);
                             plugin.getDataStore().saveCurrency(currency);
-                            sender.sendMessage(F.getExchangeRateSet().replace("{currencycolor}", "" + currency.getColor()).replace("{currency}", currency.getPlural()).replace("{amount}", String.valueOf(amount)));
+                            sender.sendMessage(F.getExchangeRateSet().replace("{currencycolor}", currency.getColor().toString()).replace("{currency}", currency.getPlural()).replace("{amount}", String.valueOf(amount)));
                         } else {
                             sender.sendMessage(F.getUnknownCurrency());
                         }
