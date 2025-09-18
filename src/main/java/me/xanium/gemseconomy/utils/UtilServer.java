@@ -9,8 +9,9 @@
 package me.xanium.gemseconomy.utils;
 
 import me.xanium.gemseconomy.GemsEconomy;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.Server;
 
 public class UtilServer {
@@ -22,7 +23,7 @@ public class UtilServer {
     private static final String Error_Prefix = "§c[G-Eco-Error] §f";
 
     public static void consoleLog(String message){
-        if(GemsEconomy.getInstance().isDebug()) getServer().getConsoleSender().sendMessage(Console_Prefix + colorize(message));
+        if(GemsEconomy.getInstance().isDebug()) getServer().getConsoleSender().sendMessage(LegacyComponentSerializer.legacySection().deserialize(Console_Prefix + colorize(message)));
     }
 
     public static void consoleLog(Throwable message){
@@ -30,7 +31,10 @@ public class UtilServer {
     }
 
     private static String colorize(String message){
-        return ChatColor.translateAlternateColorCodes('&', message);
+        return message.replace("&", "§");
     }
 
+    public static OfflinePlayer getOfflinePlayer(String name) {
+        return Bukkit.getOfflinePlayer(name);
+    }
 }

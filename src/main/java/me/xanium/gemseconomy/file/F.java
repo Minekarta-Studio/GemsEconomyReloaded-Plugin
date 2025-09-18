@@ -9,7 +9,6 @@
 package me.xanium.gemseconomy.file;
 
 import me.xanium.gemseconomy.GemsEconomy;
-import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 
@@ -34,7 +33,7 @@ public class F {
     }
 
     private static String colorize(String message) {
-        return ChatColor.translateAlternateColorCodes('&', message);
+        return message.replace('&', '§');
     }
 
     public static String getPrefix() {

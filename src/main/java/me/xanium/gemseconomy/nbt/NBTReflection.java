@@ -11,6 +11,7 @@ package me.xanium.gemseconomy.nbt;
 import me.xanium.gemseconomy.GemsEconomy;
 import org.bukkit.inventory.ItemStack;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 public class NBTReflection {
@@ -30,7 +31,7 @@ public class NBTReflection {
     private static Object getNewNBTTag() {
         try {
             Class c = Class.forName("net.minecraft.server." + GemsEconomy.getInstance().getNmsVersion().getVersionString() + ".NBTTagCompound");
-            return c.newInstance();
+            return c.getDeclaredConstructor().newInstance();
         } catch (Exception ex) {
             ex.printStackTrace();
             return null;

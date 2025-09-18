@@ -8,8 +8,8 @@
 
 package me.xanium.gemseconomy.nbt;
 
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -60,19 +60,19 @@ public class NMSVersion {
             this.versionID = getVersionID(version);
         } else {
             this.versionID = 0;
-            Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_RED + "----------------------------------------------------------");
-            Bukkit.getConsoleSender().sendMessage("");
-            Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_RED + "" + ChatColor.BOLD + "YOU ARE RUNNING AN UNSUPPORTED VERSION OF SPIGOT!");
-            Bukkit.getConsoleSender().sendMessage("");
-            Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "GemsEconomy Cheques functionality will at best be limited. Please don't come");
-            Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "complaining to me, the developer of GemsEconomy, when something breaks,");
-            Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "because running an unsupported version will cause exactly this. I do");
-            Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "in no way accept responsibility for ANY damage caused to a server running");
-            Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "an unsupported version of Spigot. It is recommended that you change to");
-            Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "a supported version of Spigot. Supported versions are 1.13, 1.14 & 1.15.");
-            Bukkit.getConsoleSender().sendMessage(ChatColor.RED +" Versions marked with an asterisk (*) may have limited functionality.");
-            Bukkit.getConsoleSender().sendMessage("");
-            Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_RED + "----------------------------------------------------------");
+            Bukkit.getConsoleSender().sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize("&c----------------------------------------------------------"));
+            Bukkit.getConsoleSender().sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(""));
+            Bukkit.getConsoleSender().sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize("&4&lYOU ARE RUNNING AN UNSUPPORTED VERSION OF SPIGOT!"));
+            Bukkit.getConsoleSender().sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(""));
+            Bukkit.getConsoleSender().sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize("&cGemsEconomy Cheques functionality will at best be limited. Please don't come"));
+            Bukkit.getConsoleSender().sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize("&ccomplaining to me, the developer of GemsEconomy, when something breaks,"));
+            Bukkit.getConsoleSender().sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize("&cbecause running an unsupported version will cause exactly this. I do"));
+            Bukkit.getConsoleSender().sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize("&cin no way accept responsibility for ANY damage caused to a server running"));
+            Bukkit.getConsoleSender().sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize("&can unsupported version of Spigot. It is recommended that you change to"));
+            Bukkit.getConsoleSender().sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize("&ca supported version of Spigot. Supported versions are 1.13, 1.14 & 1.15."));
+            Bukkit.getConsoleSender().sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize("&c Versions marked with an asterisk (*) may have limited functionality."));
+            Bukkit.getConsoleSender().sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(""));
+            Bukkit.getConsoleSender().sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize("&c----------------------------------------------------------"));
         }
     }
 

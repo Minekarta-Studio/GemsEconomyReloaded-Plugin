@@ -17,7 +17,7 @@ import me.xanium.gemseconomy.currency.CachedTopListEntry;
 import me.xanium.gemseconomy.currency.Currency;
 import me.xanium.gemseconomy.utils.SchedulerUtils;
 import me.xanium.gemseconomy.utils.UtilServer;
-import org.bukkit.ChatColor;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -168,7 +168,7 @@ public class MySQLStorage extends DataStorage {
                 boolean decimals = set.getInt("decimals_supported") == 1;
                 boolean isDefault = set.getInt("is_default") == 1;
                 boolean payable = set.getInt("payable") == 1;
-                ChatColor color = ChatColor.valueOf(set.getString("color"));
+                NamedTextColor color = NamedTextColor.NAMES.value(set.getString("color").toLowerCase());
                 double exchangeRate = set.getDouble("exchange_rate");
                 Currency currency = new Currency(uuid, singular, plural);
                 currency.setDefaultBalance(defaultBalance);
@@ -199,7 +199,7 @@ public class MySQLStorage extends DataStorage {
                 boolean decimals = set.getInt("decimals_supported") == 1;
                 boolean isDefault = set.getInt("is_default") == 1;
                 boolean payable = set.getInt("payable") == 1;
-                ChatColor color = ChatColor.valueOf(set.getString("color"));
+                NamedTextColor color = NamedTextColor.NAMES.value(set.getString("color").toLowerCase());
                 double exchangeRate = set.getDouble("exchange_rate");
 
                 currency.setDefaultBalance(defaultBalance);
@@ -228,7 +228,7 @@ public class MySQLStorage extends DataStorage {
             stmt.setInt(6, currency.isDecimalSupported() ? 1 : 0);
             stmt.setInt(7, currency.isDefaultCurrency() ? 1 : 0);
             stmt.setInt(8, currency.isPayable() ? 1 : 0);
-            stmt.setString(9, currency.getColor().name());
+            stmt.setString(9, currency.getColor().toString());
             stmt.setDouble(10, currency.getExchangeRate());
 
             stmt.execute();
@@ -454,6 +454,7 @@ public class MySQLStorage extends DataStorage {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public void createAccount(Account account) {
         try (Connection connection = getHikari().getConnection()) {
             PreparedStatement stmt = connection.prepareStatement(SAVE_ACCOUNT);
@@ -476,6 +477,7 @@ public class MySQLStorage extends DataStorage {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public void saveAccount(Account account) {
         try (Connection connection = getHikari().getConnection()) {
             PreparedStatement stmt = connection.prepareStatement(SAVE_ACCOUNT);

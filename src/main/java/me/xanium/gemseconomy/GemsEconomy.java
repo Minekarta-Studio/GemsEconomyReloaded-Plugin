@@ -139,7 +139,9 @@ public class GemsEconomy extends JavaPlugin {
         if (isVault()) getVaultHandler().unhook();
 
         if (getDataStore() != null) {
-            getDataStore().close();
+            // Closing the database connection can be a blocking operation.
+            // To prevent the server from hanging on shutdown, we do this asynchronously.
+            SchedulerUtils.runAsync(getDataStore()::close);
         }
     }
 

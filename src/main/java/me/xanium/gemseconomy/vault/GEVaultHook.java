@@ -62,7 +62,7 @@ public class GEVaultHook extends AbstractEconomy {
 
     @Override
     public boolean has(String playerName, double amount) {
-        Account user = GemsEconomy.getInstance().getAccountManager().getAccount(playerName);
+        Account user = GemsEconomy.getInstance().getAccountManager().getAccount(UtilServer.getOfflinePlayer(playerName).getUniqueId());
         if(user != null){
             return user.hasEnough(amount);
         }
@@ -71,12 +71,16 @@ public class GEVaultHook extends AbstractEconomy {
 
     @Override
     public boolean has(OfflinePlayer player, double amount) {
-        return has(player.getName(), amount);
+        Account user = GemsEconomy.getInstance().getAccountManager().getAccount(player.getUniqueId());
+        if(user != null){
+            return user.hasEnough(amount);
+        }
+        return false;
     }
 
     @Override
     public boolean hasAccount(String playerName) {
-        return GemsEconomy.getInstance().getAccountManager().getAccount(playerName) != null;
+        return GemsEconomy.getInstance().getAccountManager().getAccount(UtilServer.getOfflinePlayer(playerName).getUniqueId()) != null;
     }
 
     @Override
@@ -87,7 +91,7 @@ public class GEVaultHook extends AbstractEconomy {
     @Override
     public double getBalance(String playerName) {
         if(GemsEconomy.getInstance().isDebug())UtilServer.consoleLog("Lookup name: " + playerName);
-        Account user = GemsEconomy.getInstance().getAccountManager().getAccount(playerName);
+        Account user = GemsEconomy.getInstance().getAccountManager().getAccount(UtilServer.getOfflinePlayer(playerName).getUniqueId());
         Currency currency = GemsEconomy.getInstance().getCurrencyManager().getDefaultCurrency();
         return user.getBalance(currency);
     }
@@ -152,52 +156,13 @@ public class GEVaultHook extends AbstractEconomy {
     }
 
     @Override
-    public EconomyResponse withdrawPlayer(String player, double amount) {
-        if(GemsEconomy.getInstance().isDebug())UtilServer.consoleLog("Lookup name: " + player);
-
-        if (amount < 0) {
-            return new EconomyResponse(0, 0, EconomyResponse.ResponseType.FAILURE, "Cannot deposit negative funds");
-        }
-
-        double balance;
-        EconomyResponse.ResponseType type = EconomyResponse.ResponseType.FAILURE;
-        String error = null;
-
-        Account user = GemsEconomy.getInstance().getAccountManager().getAccount(player);
-        Currency currency = GemsEconomy.getInstance().getCurrencyManager().getDefaultCurrency();
-
-        if(user.withdraw(currency, amount)){
-            balance = user.getBalance(currency);
-            type = EconomyResponse.ResponseType.SUCCESS;
-        }else{
-            balance = user.getBalance(currency);
-            error = "Could not withdraw " + amount + " from " + player + " because they don't have enough funds";
-        }
-        return new EconomyResponse(amount, balance, type, error);
+    public EconomyResponse withdrawPlayer(String playerName, double amount) {
+        return withdrawPlayer(UtilServer.getOfflinePlayer(playerName), amount);
     }
 
     @Override
-    public EconomyResponse depositPlayer(String player, double amount) {
-        if(GemsEconomy.getInstance().isDebug())UtilServer.consoleLog("Lookup name: " + player);
-        if (amount < 0) {
-            return new EconomyResponse(0, 0, EconomyResponse.ResponseType.FAILURE, "Cannot deposit negative funds");
-        }
-
-        double balance;
-        EconomyResponse.ResponseType type = EconomyResponse.ResponseType.FAILURE;
-        String error = null;
-
-        Account user = GemsEconomy.getInstance().getAccountManager().getAccount(player);
-        Currency currency = GemsEconomy.getInstance().getCurrencyManager().getDefaultCurrency();
-
-        if(user.deposit(currency, amount)){
-            balance = user.getBalance(currency);
-            type = EconomyResponse.ResponseType.SUCCESS;
-        }else{
-            balance = user.getBalance(currency);
-            error = "Could not deposit " + amount + " to " + player + " because they are not allowed to receive currency.";
-        }
-        return new EconomyResponse(amount, balance, type, error);
+    public EconomyResponse depositPlayer(String playerName, double amount) {
+        return depositPlayer(UtilServer.getOfflinePlayer(playerName), amount);
     }
 
     @Override
@@ -212,12 +177,22 @@ public class GEVaultHook extends AbstractEconomy {
 
     @Override
     public boolean createPlayerAccount(String playerName) {
-        return false;
+        return createPlayerAccount(UtilServer.getOfflinePlayer(playerName));
     }
 
     @Override
     public boolean createPlayerAccount(String playerName, String worldName) {
-        return false;
+        return createPlayerAccount(playerName);
+    }
+
+    @Override
+    public boolean createPlayerAccount(OfflinePlayer player) {
+        return false; // GemsEconomy creates accounts on join
+    }
+
+    @Override
+    public boolean createPlayerAccount(OfflinePlayer player, String worldName) {
+        return createPlayerAccount(player);
     }
 
     @Override
@@ -266,6 +241,11 @@ public class GEVaultHook extends AbstractEconomy {
     }
 
     @Override
+    public EconomyResponse createBank(String name, OfflinePlayer player) {
+        return new EconomyResponse(0, 0, EconomyResponse.ResponseType.NOT_IMPLEMENTED, "GemsEconomy does not support bank accounts!");
+    }
+
+    @Override
     public EconomyResponse deleteBank(String name) {
         return new EconomyResponse(0, 0, EconomyResponse.ResponseType.NOT_IMPLEMENTED, "GemsEconomy does not support bank accounts!");
     }
@@ -291,7 +271,17 @@ public class GEVaultHook extends AbstractEconomy {
     }
 
     @Override
+    public EconomyResponse isBankOwner(String name, OfflinePlayer player) {
+        return new EconomyResponse(0, 0, EconomyResponse.ResponseType.NOT_IMPLEMENTED, "GemsEconomy does not support bank accounts!");
+    }
+
+    @Override
     public EconomyResponse isBankMember(String name, String playerName) {
+        return new EconomyResponse(0, 0, EconomyResponse.ResponseType.NOT_IMPLEMENTED, "GemsEconomy does not support bank accounts!");
+    }
+
+    @Override
+    public EconomyResponse isBankMember(String name, OfflinePlayer player) {
         return new EconomyResponse(0, 0, EconomyResponse.ResponseType.NOT_IMPLEMENTED, "GemsEconomy does not support bank accounts!");
     }
 

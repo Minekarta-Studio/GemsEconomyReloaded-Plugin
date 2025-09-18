@@ -25,6 +25,7 @@ public class Updater {
     private String currentVersion;
     private JavaPlugin plugin;
 
+    @SuppressWarnings("deprecation")
     public Updater(JavaPlugin plugin) {
         this.plugin = plugin;
         this.currentVersion = plugin.getDescription().getVersion();

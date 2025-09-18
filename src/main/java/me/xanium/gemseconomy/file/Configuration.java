@@ -22,6 +22,7 @@ public class Configuration {
         this.plugin = plugin;
     }
 
+    @SuppressWarnings("deprecation")
     public void loadDefaultConfig() {
 
         FileConfiguration config = plugin.getConfig();

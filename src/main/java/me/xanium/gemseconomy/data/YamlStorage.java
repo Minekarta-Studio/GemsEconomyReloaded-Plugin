@@ -12,7 +12,7 @@ import me.xanium.gemseconomy.currency.CachedTopListEntry;
 import me.xanium.gemseconomy.currency.Currency;
 import me.xanium.gemseconomy.utils.SchedulerUtils;
 import me.xanium.gemseconomy.utils.UtilServer;
-import org.bukkit.ChatColor;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -68,7 +68,7 @@ public class YamlStorage extends DataStorage {
                 String single = getConfig().getString(path + ".singular");
                 String plural = getConfig().getString(path + ".plural");
                 Currency currency = new Currency(UUID.fromString(uuid), single, plural);
-                currency.setColor(ChatColor.valueOf(getConfig().getString(path + ".color").toUpperCase()));
+                currency.setColor(NamedTextColor.NAMES.value(getConfig().getString(path + ".color").toLowerCase()));
                 currency.setDecimalSupported(getConfig().getBoolean(path + ".decimalsupported"));
                 currency.setDefaultBalance(getConfig().getDouble(path + ".defaultbalance"));
                 currency.setDefaultCurrency(getConfig().getBoolean(path + ".defaultcurrency"));
@@ -91,7 +91,7 @@ public class YamlStorage extends DataStorage {
         getConfig().set(path + ".decimalsupported", currency.isDecimalSupported());
         getConfig().set(path + ".defaultcurrency", currency.isDefaultCurrency());
         getConfig().set(path + ".payable", currency.isPayable());
-        getConfig().set(path + ".color", currency.getColor().name());
+        getConfig().set(path + ".color", currency.getColor().toString());
         getConfig().set(path + ".exchange_rate", currency.getExchangeRate());
         try {
             getConfig().save(getFile());
