@@ -11,6 +11,7 @@ package me.xanium.gemseconomy.listeners;
 import me.xanium.gemseconomy.GemsEconomy;
 import me.xanium.gemseconomy.account.Account;
 import me.xanium.gemseconomy.file.F;
+import me.xanium.gemseconomy.utils.ModernChat;
 import me.xanium.gemseconomy.utils.SchedulerUtils;
 import me.xanium.gemseconomy.utils.UtilServer;
 import org.bukkit.entity.Player;
@@ -74,7 +75,7 @@ public class EconomyListener implements Listener {
 
         SchedulerUtils.runLater(40L, () -> {
             if (plugin.getCurrencyManager().getDefaultCurrency() == null && (player.isOp() || player.hasPermission("gemseconomy.command.currency"))) {
-                player.sendMessage(F.getPrefix() + "§cYou have not made a currency yet. Please do so by \"§e/currency§c\".");
+                ModernChat.send(player, F.getPrefix().append(ModernChat.MMRC("<red>You have not made a currency yet. Please do so by \"<yellow>/currency</yellow>\".</red>")));
             }
         });
     }

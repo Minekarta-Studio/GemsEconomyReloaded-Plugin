@@ -12,9 +12,9 @@ import me.xanium.gemseconomy.GemsEconomy;
 import me.xanium.gemseconomy.currency.Currency;
 import me.xanium.gemseconomy.event.GemsConversionEvent;
 import me.xanium.gemseconomy.event.GemsTransactionEvent;
+import me.xanium.gemseconomy.utils.ModernChat;
 import me.xanium.gemseconomy.utils.SchedulerUtils;
 import me.xanium.gemseconomy.utils.TranactionType;
-import me.xanium.gemseconomy.utils.UtilServer;
 import org.bukkit.Bukkit;
 
 import java.util.HashMap;
@@ -94,10 +94,10 @@ public class Account {
             double added = getBalance(received) + finalAmount;
 
             if(GemsEconomy.getInstance().isDebug()){
-                UtilServer.consoleLog("Rate: " + rate);
-                UtilServer.consoleLog("Finalized amount: " + finalAmount);
-                UtilServer.consoleLog("Amount to remove: " + exchanged.format(removed));
-                UtilServer.consoleLog("Amount to add: " + received.format(added));
+                ModernChat.send(Bukkit.getConsoleSender(), "Rate: " + rate);
+                ModernChat.send(Bukkit.getConsoleSender(), "Finalized amount: " + finalAmount);
+                ModernChat.send(Bukkit.getConsoleSender(), "Amount to remove: " + exchanged.format(removed));
+                ModernChat.send(Bukkit.getConsoleSender(), "Amount to add: " + received.format(added));
             }
 
             if(hasEnough(exchanged, exchangeAmount)){
@@ -115,10 +115,10 @@ public class Account {
         double added = getBalance(received) + exchangeAmount;
 
         if(GemsEconomy.getInstance().isDebug()){
-            UtilServer.consoleLog("Rate: " + rate);
-            UtilServer.consoleLog("Finalized amount: " + finalAmount);
-            UtilServer.consoleLog("Amount to remove: " + exchanged.format(removed));
-            UtilServer.consoleLog("Amount to add: " + received.format(added));
+            ModernChat.send(Bukkit.getConsoleSender(), "Rate: " + rate);
+            ModernChat.send(Bukkit.getConsoleSender(), "Finalized amount: " + finalAmount);
+            ModernChat.send(Bukkit.getConsoleSender(), "Amount to remove: " + exchanged.format(removed));
+            ModernChat.send(Bukkit.getConsoleSender(), "Amount to add: " + received.format(added));
         }
 
         if(hasEnough(exchanged, finalAmount)){

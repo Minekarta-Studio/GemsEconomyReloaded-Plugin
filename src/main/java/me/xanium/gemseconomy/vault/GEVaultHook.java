@@ -11,6 +11,7 @@ package me.xanium.gemseconomy.vault;
 import me.xanium.gemseconomy.GemsEconomy;
 import me.xanium.gemseconomy.account.Account;
 import me.xanium.gemseconomy.currency.Currency;
+import me.xanium.gemseconomy.utils.ModernChat;
 import me.xanium.gemseconomy.utils.UtilServer;
 import net.milkbowl.vault.economy.AbstractEconomy;
 import net.milkbowl.vault.economy.EconomyResponse;
@@ -90,7 +91,7 @@ public class GEVaultHook extends AbstractEconomy {
 
     @Override
     public double getBalance(String playerName) {
-        if(GemsEconomy.getInstance().isDebug())UtilServer.consoleLog("Lookup name: " + playerName);
+        if(GemsEconomy.getInstance().isDebug()) ModernChat.send(GemsEconomy.getInstance().getServer().getConsoleSender(), "Lookup name: " + playerName);
         Account user = GemsEconomy.getInstance().getAccountManager().getAccount(UtilServer.getOfflinePlayer(playerName).getUniqueId());
         Currency currency = GemsEconomy.getInstance().getCurrencyManager().getDefaultCurrency();
         return user.getBalance(currency);
@@ -98,7 +99,7 @@ public class GEVaultHook extends AbstractEconomy {
 
     @Override
     public double getBalance(OfflinePlayer player) {
-        if(GemsEconomy.getInstance().isDebug())UtilServer.consoleLog("Lookup name: " + player.getName() + "(" + player.getUniqueId() + ")");
+        if(GemsEconomy.getInstance().isDebug())ModernChat.send(GemsEconomy.getInstance().getServer().getConsoleSender(), "Lookup name: " + player.getName() + "(" + player.getUniqueId() + ")");
         Account user = GemsEconomy.getInstance().getAccountManager().getAccount(player.getUniqueId());
         Currency currency = GemsEconomy.getInstance().getCurrencyManager().getDefaultCurrency();
         return user.getBalance(currency);
@@ -106,7 +107,7 @@ public class GEVaultHook extends AbstractEconomy {
 
     @Override
     public EconomyResponse withdrawPlayer(OfflinePlayer player, double amount) {
-        if(GemsEconomy.getInstance().isDebug())UtilServer.consoleLog("Lookup name: " + player.getName() + "(" + player.getUniqueId() + ")");
+        if(GemsEconomy.getInstance().isDebug())ModernChat.send(GemsEconomy.getInstance().getServer().getConsoleSender(), "Lookup name: " + player.getName() + "(" + player.getUniqueId() + ")");
 
         if (amount < 0) {
             return new EconomyResponse(0, 0, EconomyResponse.ResponseType.FAILURE, "Cannot deposit negative funds");
@@ -131,7 +132,7 @@ public class GEVaultHook extends AbstractEconomy {
 
     @Override
     public EconomyResponse depositPlayer(OfflinePlayer player, double amount) {
-        if(GemsEconomy.getInstance().isDebug())UtilServer.consoleLog("Lookup name: " + player.getName() + "(" + player.getUniqueId()+ ")");
+        if(GemsEconomy.getInstance().isDebug())ModernChat.send(GemsEconomy.getInstance().getServer().getConsoleSender(), "Lookup name: " + player.getName() + "(" + player.getUniqueId()+ ")");
 
         if (amount < 0) {
             return new EconomyResponse(0, 0, EconomyResponse.ResponseType.FAILURE, "Cannot deposit negative funds");

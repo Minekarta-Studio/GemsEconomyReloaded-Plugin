@@ -8,7 +8,7 @@
 
 package me.xanium.gemseconomy.nbt;
 
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import me.xanium.gemseconomy.utils.ModernChat;
 import org.bukkit.Bukkit;
 
 import java.util.HashMap;
@@ -82,17 +82,17 @@ public class NMSVersion {
             this.versionID = getVersionID(version);
         } else {
             this.versionID = 0;
-            Bukkit.getConsoleSender().sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize("&c----------------------------------------------------------"));
-            Bukkit.getConsoleSender().sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(""));
-            Bukkit.getConsoleSender().sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize("&4&lYOU ARE RUNNING AN UNSUPPORTED VERSION OF SPIGOT!"));
-            Bukkit.getConsoleSender().sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(""));
-            Bukkit.getConsoleSender().sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize("&cGemsEconomy Cheques functionality may be limited. Please don't come"));
-            Bukkit.getConsoleSender().sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize("&ccomplaining to the developer of GemsEconomy when something breaks,"));
-            Bukkit.getConsoleSender().sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize("&cbecause running an unsupported version can cause issues."));
-            Bukkit.getConsoleSender().sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize("&cIt is recommended that you change to a supported version of Spigot."));
-            Bukkit.getConsoleSender().sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize("&cPlease check the plugin's official page for a list of supported versions."));
-            Bukkit.getConsoleSender().sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(""));
-            Bukkit.getConsoleSender().sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize("&c----------------------------------------------------------"));
+            ModernChat.send(Bukkit.getConsoleSender(), "<red>----------------------------------------------------------</red>");
+            ModernChat.send(Bukkit.getConsoleSender(), "");
+            ModernChat.send(Bukkit.getConsoleSender(), "<dark_red><b>YOU ARE RUNNING AN UNSUPPORTED VERSION OF SPIGOT!</b></dark_red>");
+            ModernChat.send(Bukkit.getConsoleSender(), "");
+            ModernChat.send(Bukkit.getConsoleSender(), "<red>GemsEconomy Cheques functionality may be limited. Please don't come</red>");
+            ModernChat.send(Bukkit.getConsoleSender(), "<red>complaining to the developer of GemsEconomy when something breaks,</red>");
+            ModernChat.send(Bukkit.getConsoleSender(), "<red>because running an unsupported version can cause issues.</red>");
+            ModernChat.send(Bukkit.getConsoleSender(), "<red>It is recommended that you change to a supported version of Spigot.</red>");
+            ModernChat.send(Bukkit.getConsoleSender(), "<red>Please check the plugin's official page for a list of supported versions.</red>");
+            ModernChat.send(Bukkit.getConsoleSender(), "");
+            ModernChat.send(Bukkit.getConsoleSender(), "<red>----------------------------------------------------------</red>");
         }
     }
 

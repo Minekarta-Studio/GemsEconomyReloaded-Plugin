@@ -25,7 +25,7 @@
       </plugin>
       <plugin>
         <artifactId>maven-shade-plugin</artifactId>
-        <version>3.2.0</version>
+        <version>3.6.1</version>
         <executions>
           <execution>
             <phase>package</phase>
@@ -34,6 +34,18 @@
             </goals>
           </execution>
         </executions>
+        <configuration>
+          <relocations>
+            <relocation>
+              <pattern>net.kyori</pattern>
+              <shadedPattern>me.xanium.gemseconomy.libs.kyori</shadedPattern>
+            </relocation>
+            <relocation>
+              <pattern>net.kyori.adventure.platform</pattern>
+              <shadedPattern>me.xanium.gemseconomy.libs.kyori.adventure.platform</shadedPattern>
+            </relocation>
+          </relocations>
+        </configuration>
       </plugin>
       <plugin>
         <artifactId>maven-jar-plugin</artifactId>
@@ -53,6 +65,10 @@
       <id>jitpack.io</id>
       <url>https://jitpack.io</url>
     </repository>
+    <repository>
+      <id>central</id>
+      <url>https://repo1.maven.org/maven2/</url>
+    </repository>
   </repositories>
   <dependencies>
     <dependency>
@@ -60,105 +76,28 @@
       <artifactId>paper-api</artifactId>
       <version>1.21-R0.1-SNAPSHOT</version>
       <scope>provided</scope>
-      <exclusions>
-        <exclusion>
-          <artifactId>brigadier</artifactId>
-          <groupId>com.mojang</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>guava</artifactId>
-          <groupId>com.google.guava</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>gson</artifactId>
-          <groupId>com.google.code.gson</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>bungeecord-chat</artifactId>
-          <groupId>net.md-5</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>snakeyaml</artifactId>
-          <groupId>org.yaml</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>joml</artifactId>
-          <groupId>org.joml</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>json-simple</artifactId>
-          <groupId>com.googlecode.json-simple</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>fastutil</artifactId>
-          <groupId>it.unimi.dsi</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>log4j-api</artifactId>
-          <groupId>org.apache.logging.log4j</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>maven-resolver-provider</artifactId>
-          <groupId>org.apache.maven</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>adventure-api</artifactId>
-          <groupId>net.kyori</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>adventure-text-minimessage</artifactId>
-          <groupId>net.kyori</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>adventure-text-serializer-gson</artifactId>
-          <groupId>net.kyori</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>adventure-text-serializer-legacy</artifactId>
-          <groupId>net.kyori</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>adventure-text-serializer-plain</artifactId>
-          <groupId>net.kyori</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>adventure-text-logger-slf4j</artifactId>
-          <groupId>net.kyori</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>checker-qual</artifactId>
-          <groupId>org.checkerframework</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>asm</artifactId>
-          <groupId>org.ow2.asm</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>asm-commons</artifactId>
-          <groupId>org.ow2.asm</groupId>
-        </exclusion>
-      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>net.kyori</groupId>
+      <artifactId>adventure-api</artifactId>
+      <version>4.17.0</version>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>com.github.MilkBowl</groupId>
       <artifactId>VaultAPI</artifactId>
       <version>1.7</version>
       <scope>provided</scope>
-      <exclusions>
-        <exclusion>
-          <artifactId>bukkit</artifactId>
-          <groupId>org.bukkit</groupId>
-        </exclusion>
-      </exclusions>
     </dependency>
   </dependencies>
   <properties>
-    <maven.compiler.target>17</maven.compiler.target>
     <maven.compiler.source>17</maven.compiler.source>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <maven.compiler.target>17</maven.compiler.target>
+    <adventure.version>4.17.0</adventure.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <package.dir>${project.build.directory}</package.dir>
     <package.name>${project.build.finalName}</package.name>
-    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <libs.dir>${project.basedir}${file.separator}libs</libs.dir>
   </properties>
 </project>

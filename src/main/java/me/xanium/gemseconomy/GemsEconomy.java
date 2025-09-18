@@ -22,6 +22,7 @@ import me.xanium.gemseconomy.logging.EconomyLogger;
 import me.xanium.gemseconomy.nbt.NMSVersion;
 import me.xanium.gemseconomy.utils.Metrics;
 import me.xanium.gemseconomy.utils.SchedulerUtils;
+import me.xanium.gemseconomy.utils.ModernChat;
 import me.xanium.gemseconomy.utils.Updater;
 import me.xanium.gemseconomy.utils.UtilServer;
 import me.xanium.gemseconomy.vault.VaultHandler;
@@ -115,7 +116,7 @@ public class GemsEconomy extends JavaPlugin {
             vaultHandler = new VaultHandler(this);
             vaultHandler.hook();
         } else {
-            UtilServer.consoleLog("Vault link is disabled.");
+            ModernChat.send(getServer().getConsoleSender(), "<yellow>Vault link is disabled.</yellow>");
         }
 
         this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
@@ -156,24 +157,24 @@ public class GemsEconomy extends JavaPlugin {
         if (strategy != null) {
             dataStorage = DataStorage.getMethod(strategy);
         } else {
-            UtilServer.consoleLog("§cNo valid storage method provided.");
-            UtilServer.consoleLog("§cCheck your files, then try again.");
+            ModernChat.send(getServer().getConsoleSender(), "<red>No valid storage method provided.</red>");
+            ModernChat.send(getServer().getConsoleSender(), "<red>Check your files, then try again.</red>");
             getServer().getPluginManager().disablePlugin(this);
             return;
         }
 
         try {
-            UtilServer.consoleLog("Initializing data store \"" + getDataStore().getName() + "\"...");
+            ModernChat.send(getServer().getConsoleSender(), "Initializing data store \"" + getDataStore().getName() + "\"...");
             getDataStore().initialize();
 
             if (load) {
-                UtilServer.consoleLog("Loading currencies...");
+                ModernChat.send(getServer().getConsoleSender(), "Loading currencies...");
                 getDataStore().loadCurrencies();
-                UtilServer.consoleLog("Loaded " + getCurrencyManager().getCurrencies().size() + " currencies!");
+                ModernChat.send(getServer().getConsoleSender(), "Loaded " + getCurrencyManager().getCurrencies().size() + " currencies!");
             }
         } catch (Throwable e) {
-            UtilServer.consoleLog("§cCannot load initial data from DataStore.");
-            UtilServer.consoleLog("§cCheck your files, then try again.");
+            ModernChat.send(getServer().getConsoleSender(), "<red>Cannot load initial data from DataStore.</red>");
+            ModernChat.send(getServer().getConsoleSender(), "<red>Check your files, then try again.</red>");
             e.printStackTrace();
             getServer().getPluginManager().disablePlugin(this);
         }
@@ -183,16 +184,16 @@ public class GemsEconomy extends JavaPlugin {
         Updater updater = new Updater(this);
         try {
             if (updater.checkForUpdates()) {
-                UtilServer.consoleLog("-------------------------------------------");
-                UtilServer.consoleLog("New Version: " + updater.getNewVersion());
-                UtilServer.consoleLog("Current Version: " + updater.getCurrentVersion());
-                UtilServer.consoleLog("Download link: " + updater.getResourceURL());
-                UtilServer.consoleLog("--------------------------------------------");
+                ModernChat.send(getServer().getConsoleSender(), "<green>-------------------------------------------</green>");
+                ModernChat.send(getServer().getConsoleSender(), "<green>New Version: " + updater.getNewVersion() + "</green>");
+                ModernChat.send(getServer().getConsoleSender(), "<green>Current Version: " + updater.getCurrentVersion() + "</green>");
+                ModernChat.send(getServer().getConsoleSender(), "<green>Download link: " + updater.getResourceURL() + "</green>");
+                ModernChat.send(getServer().getConsoleSender(), "<green>--------------------------------------------</green>");
             }
         } catch (IOException e) {
-            UtilServer.consoleLog("Could not check for updates! Error log will follow if debug is enabled.");
+            ModernChat.send(getServer().getConsoleSender(), "<red>Could not check for updates! Error log will follow if debug is enabled.</red>");
             if (isDebug()) {
-                UtilServer.consoleLog(e.getCause());
+                e.printStackTrace();
             }
         }
     }

@@ -10,9 +10,10 @@ package me.xanium.gemseconomy.data;
 import me.xanium.gemseconomy.account.Account;
 import me.xanium.gemseconomy.currency.CachedTopListEntry;
 import me.xanium.gemseconomy.currency.Currency;
+import me.xanium.gemseconomy.utils.ModernChat;
 import me.xanium.gemseconomy.utils.SchedulerUtils;
-import me.xanium.gemseconomy.utils.UtilServer;
 import net.kyori.adventure.text.format.NamedTextColor;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -39,7 +40,7 @@ public class YamlStorage extends DataStorage {
         if (!getFile().exists()) {
             try {
                 if (getFile().createNewFile()) {
-                    UtilServer.consoleLog("Data file created.");
+                    ModernChat.send(Bukkit.getConsoleSender(), "Data file created.");
                 }
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -76,7 +77,7 @@ public class YamlStorage extends DataStorage {
                 currency.setSymbol(getConfig().getString(path + ".symbol"));
                 currency.setExchangeRate(getConfig().getDouble(path + ".exchange_rate"));
                 plugin.getCurrencyManager().add(currency);
-                UtilServer.consoleLog("Loaded currency: " + currency.getSingular());
+                ModernChat.send(Bukkit.getConsoleSender(), "Loaded currency: " + currency.getSingular());
             }
         }
     }

@@ -24,6 +24,7 @@ import me.xanium.gemseconomy.GemsEconomy;
 import me.xanium.gemseconomy.currency.CachedTopListEntry;
 import me.xanium.gemseconomy.currency.Currency;
 import me.xanium.gemseconomy.file.F;
+import me.xanium.gemseconomy.utils.ModernChat;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -36,11 +37,11 @@ public class BalanceTopCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String s670, String[] args) {
         if (!sender.hasPermission("gemseconomy.command.baltop")) {
-            sender.sendMessage(F.getNoPerms());
+            ModernChat.send(sender, F.getNoPerms());
             return true;
         }
         if (!plugin.getDataStore().isTopSupported()) {
-            sender.sendMessage(F.getBalanceTopNoSupport().replace("{storage}", plugin.getDataStore().getName()));
+            ModernChat.send(sender, F.getRaw("Messages.balance_top.nosupport").replace("{storage}", plugin.getDataStore().getName()));
             return true;
         }
 
@@ -49,7 +50,7 @@ public class BalanceTopCommand implements CommandExecutor {
         if (args.length > 0) {
             currency = plugin.getCurrencyManager().getCurrency(args[0]);
             if (currency == null) {
-                sender.sendMessage(F.getUnknownCurrency());
+                ModernChat.send(sender, F.getUnknownCurrency());
                 return true;
             }
 
@@ -57,7 +58,7 @@ public class BalanceTopCommand implements CommandExecutor {
                 try {
                     page = Integer.parseInt(args[1]);
                 } catch (NumberFormatException ex) {
-                    sender.sendMessage(F.getUnvalidPage());
+                    ModernChat.send(sender, F.getUnvalidPage());
                     return true;
                 }
             }
@@ -71,7 +72,7 @@ public class BalanceTopCommand implements CommandExecutor {
 
         if (currency != null) {
             plugin.getDataStore().getTopList(currency, offset, ACCOUNTS_PER_PAGE, cachedTopListEntries -> {
-                sender.sendMessage(F.getBalanceTopHeader()
+                ModernChat.send(sender, F.getRaw("Messages.balance_top.header")
                         .replace("{currencycolor}", "" + curr.getColor())
                         .replace("{currencyplural}", curr.getPlural())
                         .replace("{page}", String.valueOf(pageNumber)));
@@ -79,14 +80,14 @@ public class BalanceTopCommand implements CommandExecutor {
                 int num = (10 * (pageNumber - 1)) + 1;
                 for (CachedTopListEntry entry : cachedTopListEntries) {
                     double balance = entry.getAmount();
-                    sender.sendMessage(F.getBalanceTop().replace("{number}", String.valueOf(num)).replace("{currencycolor}", "" + curr.getColor())
+                    ModernChat.send(sender, F.getRaw("Messages.balance_top.balance").replace("{number}", String.valueOf(num)).replace("{currencycolor}", "" + curr.getColor())
                             .replace("{player}", entry.getName()).replace("{balance}", curr.format(balance)));
                     num++;
                 }
                 if (cachedTopListEntries.isEmpty()) {
-                    sender.sendMessage(F.getBalanceTopEmpty());
+                    ModernChat.send(sender, F.getBalanceTopEmpty());
                 } else {
-                    sender.sendMessage(F.getBalanceTopNext().replace("{currencycolor}", "" + curr.getColor()).replace("{currencyplural}", curr.getPlural()).replace("{page}", String.valueOf((pageNumber + 1))));
+                    ModernChat.send(sender, F.getRaw("Messages.balance_top.next").replace("{currencycolor}", "" + curr.getColor()).replace("{currencyplural}", curr.getPlural()).replace("{page}", String.valueOf((pageNumber + 1))));
                 }
             });
         }

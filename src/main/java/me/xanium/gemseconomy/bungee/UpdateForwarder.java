@@ -6,8 +6,8 @@ import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 import me.xanium.gemseconomy.GemsEconomy;
 import me.xanium.gemseconomy.currency.Currency;
+import me.xanium.gemseconomy.utils.ModernChat;
 import me.xanium.gemseconomy.utils.SchedulerUtils;
-import me.xanium.gemseconomy.utils.UtilServer;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.messaging.PluginMessageListener;
@@ -47,7 +47,7 @@ public class UpdateForwarder implements PluginMessageListener {
             String type = info[0];
             String name = info[1];
             if(plugin.isDebug()){
-                UtilServer.consoleLog(channelName + " - Received: " + type + " = " + name);
+                ModernChat.send(Bukkit.getConsoleSender(), channelName + " - Received: " + type + " = " + name);
             }
 
             if(type.equals("currency")){
@@ -56,7 +56,7 @@ public class UpdateForwarder implements PluginMessageListener {
                 if(currency != null) {
                     plugin.getDataStore().updateCurrencyLocally(currency);
                     if(GemsEconomy.getInstance().isDebug()){
-                        UtilServer.consoleLog(channelName + " - Currency " + name + " updated.");
+                        ModernChat.send(Bukkit.getConsoleSender(), channelName + " - Currency " + name + " updated.");
                     }
                 }
             }
@@ -65,7 +65,7 @@ public class UpdateForwarder implements PluginMessageListener {
                 plugin.getAccountManager().removeAccount(uuid);
                 SchedulerUtils.runAsync(() -> plugin.getDataStore().loadAccount(uuid));
                 if(plugin.isDebug()){
-                    UtilServer.consoleLog(channelName + " - Account " + name + " updated.");
+                    ModernChat.send(Bukkit.getConsoleSender(), channelName + " - Account " + name + " updated.");
                 }
             }
         }
@@ -91,7 +91,7 @@ public class UpdateForwarder implements PluginMessageListener {
         Player player = Iterables.getFirst(Bukkit.getOnlinePlayers(), null);
         if(player == null){
             if(GemsEconomy.getInstance().isDebug()){
-                UtilServer.consoleLog(channelName + " - Player is Null. Cancelled.");
+                ModernChat.send(Bukkit.getConsoleSender(), channelName + " - Player is Null. Cancelled.");
             }
             return;
         }

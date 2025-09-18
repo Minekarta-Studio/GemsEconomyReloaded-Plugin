@@ -16,6 +16,7 @@
 /app/src/main/java/me/xanium/gemseconomy/commands/ExchangeCommand.java
 /app/src/main/java/me/xanium/gemseconomy/file/F.java
 /app/src/main/java/me/xanium/gemseconomy/event/GemsPayEvent.java
+/app/src/main/java/me/xanium/gemseconomy/utils/ModernChat.java
 /app/src/main/java/me/xanium/gemseconomy/utils/Updater.java
 /app/src/main/java/me/xanium/gemseconomy/listeners/EconomyListener.java
 /app/src/main/java/me/xanium/gemseconomy/currency/CachedTopList.java

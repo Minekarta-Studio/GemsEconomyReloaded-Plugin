@@ -1,15 +1,6 @@
-/*
- * Copyright Xanium Development (c) 2013-2018. All Rights Reserved.
- * Any code contained within this document, and any associated APIs with similar branding
- * are the sole property of Xanium Development. Distribution, reproduction, taking snippets or claiming
- * any contents as your own will break the terms of the license, and void any agreements with you, the third party.
- * Thank you.
- */
-
 package me.xanium.gemseconomy.utils;
 
 import me.xanium.gemseconomy.GemsEconomy;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.Server;
@@ -19,19 +10,16 @@ public class UtilServer {
     private static Server getServer(){
         return Bukkit.getServer();
     }
-    private static final String Console_Prefix = "§2[GemsEconomy] §f";
-    private static final String Error_Prefix = "§c[G-Eco-Error] §f";
+    private static final String Console_Prefix = "<green>[GemsEconomy] </green>";
+    private static final String Error_Prefix = "<red>[G-Eco-Error] </red>";
 
     public static void consoleLog(String message){
-        if(GemsEconomy.getInstance().isDebug()) getServer().getConsoleSender().sendMessage(LegacyComponentSerializer.legacySection().deserialize(Console_Prefix + colorize(message)));
+        if(GemsEconomy.getInstance().isDebug()) ModernChat.send(getServer().getConsoleSender(), Console_Prefix + message);
     }
 
     public static void consoleLog(Throwable message){
-        getServer().getConsoleSender().sendMessage(Error_Prefix + message);
-    }
-
-    private static String colorize(String message){
-        return message.replace("&", "§");
+        ModernChat.send(getServer().getConsoleSender(), Error_Prefix + message.getMessage());
+        message.printStackTrace();
     }
 
     public static OfflinePlayer getOfflinePlayer(String name) {

@@ -13,6 +13,7 @@ import me.xanium.gemseconomy.account.Account;
 import me.xanium.gemseconomy.currency.Currency;
 import me.xanium.gemseconomy.file.F;
 import me.xanium.gemseconomy.nbt.NBTItem;
+import me.xanium.gemseconomy.utils.ModernChat;
 import me.xanium.gemseconomy.utils.UtilString;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -31,12 +32,12 @@ public class ChequeCommand implements CommandExecutor {
         }
 
         if (!(sender instanceof Player)) {
-            sender.sendMessage(F.getNoConsole());
+            ModernChat.send(sender, F.getNoConsole());
             return true;
         }
         Player player = (Player) sender;
         if (!player.hasPermission("gemseconomy.command.cheque")) {
-            player.sendMessage(F.getNoPerms());
+            ModernChat.send(player, F.getNoPerms());
             return true;
         }
         if (args.length == 0) {
@@ -62,7 +63,7 @@ public class ChequeCommand implements CommandExecutor {
                                     Account user = plugin.getAccountManager().getAccount(player);
                                     Currency currency = plugin.getChequeManager().getCurrency(item);
                                     user.deposit(currency, value);
-                                    player.sendMessage(F.getChequeRedeemed());
+                                    ModernChat.send(player, F.getChequeRedeemed());
                                     return true;
                                 } else {
 
@@ -70,23 +71,23 @@ public class ChequeCommand implements CommandExecutor {
                                     Account user = plugin.getAccountManager().getAccount(player);
                                     Currency currency = plugin.getChequeManager().getCurrency(item);
                                     user.deposit(currency, value);
-                                    player.sendMessage(F.getChequeRedeemed());
+                                    ModernChat.send(player, F.getChequeRedeemed());
                                     return true;
                                 }
                             } else {
-                                player.sendMessage(F.getChequeInvalid());
+                                ModernChat.send(player, F.getChequeInvalid());
                             }
                         } else {
-                            player.sendMessage(F.getChequeInvalid());
+                            ModernChat.send(player, F.getChequeInvalid());
                         }
                     } else {
-                        player.sendMessage(F.getChequeInvalid());
+                        ModernChat.send(player, F.getChequeInvalid());
                     }
                 } else {
-                    player.sendMessage(F.getChequeInvalid());
+                    ModernChat.send(player, F.getChequeInvalid());
                 }
             } else {
-                player.sendMessage(F.getUnknownSubCommand());
+                ModernChat.send(player, F.getUnknownSubCommand());
             }
         }
 
@@ -107,13 +108,13 @@ public class ChequeCommand implements CommandExecutor {
 
                                     user.withdraw(currency, amount);
                                     player.getInventory().addItem(plugin.getChequeManager().write(player.getName(), currency, amount));
-                                    player.sendMessage(F.getChequeSucess());
+                                    ModernChat.send(player, F.getChequeSucess());
                                     return true;
                                 }else{
-                                    player.sendMessage(F.getInsufficientFunds().replace("{currencycolor}", currency.getColor()+"").replace("{currency}", currency.getSingular()));
+                                    ModernChat.send(player, F.getRaw("Messages.insufficientFunds").replace("{currencycolor}", currency.getColor()+"").replace("{currency}", currency.getSingular()));
                                 }
                             } else {
-                                player.sendMessage(F.getUnknownCurrency());
+                                ModernChat.send(player, F.getUnknownCurrency());
                             }
                         }
 
@@ -122,19 +123,19 @@ public class ChequeCommand implements CommandExecutor {
                         if(user.hasEnough(amount)) {
                             user.withdraw(plugin.getCurrencyManager().getDefaultCurrency(), amount);
                             player.getInventory().addItem(plugin.getChequeManager().write(player.getName(), plugin.getCurrencyManager().getDefaultCurrency(), amount));
-                            player.sendMessage(F.getChequeSucess());
+                            ModernChat.send(player, F.getChequeSucess());
                             return true;
                         }else{
-                            player.sendMessage(F.getInsufficientFunds().replace("{currencycolor}", defaultCurrency.getColor()+"").replace("{currency}", defaultCurrency.getSingular()));
+                            ModernChat.send(player, F.getRaw("Messages.insufficientFunds").replace("{currencycolor}", defaultCurrency.getColor()+"").replace("{currency}", defaultCurrency.getSingular()));
                         }
                     } else {
-                        player.sendMessage(F.getUnvalidAmount());
+                        ModernChat.send(player, F.getUnvalidAmount());
                     }
                 } else {
-                    player.sendMessage(F.getUnvalidAmount());
+                    ModernChat.send(player, F.getUnvalidAmount());
                 }
             } else {
-                player.sendMessage(F.getUnknownSubCommand());
+                ModernChat.send(player, F.getUnknownSubCommand());
             }
         }
         return true;
