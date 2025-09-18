@@ -42,6 +42,28 @@ public class NMSVersion {
 
     public static final String V1_16_R3 = "v1_16_R3";
 
+    public static final String V1_17_R1 = "v1_17_R1";
+
+    public static final String V1_18_R1 = "v1_18_R1";
+
+    public static final String V1_18_R2 = "v1_18_R2";
+
+    public static final String V1_19_R1 = "v1_19_R1";
+
+    public static final String V1_19_R2 = "v1_19_R2";
+
+    public static final String V1_19_R3 = "v1_19_R3";
+
+    public static final String V1_20_R1 = "v1_20_R1";
+
+    public static final String V1_20_R2 = "v1_20_R2";
+
+    public static final String V1_20_R3 = "v1_20_R3";
+
+    public static final String V1_20_R4 = "v1_20_R4";
+
+    public static final String V1_21_R1 = "v1_21_R1";
+
     private Map<Integer, String> versionMap;
 
     private int versionID;
@@ -64,13 +86,11 @@ public class NMSVersion {
             Bukkit.getConsoleSender().sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(""));
             Bukkit.getConsoleSender().sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize("&4&lYOU ARE RUNNING AN UNSUPPORTED VERSION OF SPIGOT!"));
             Bukkit.getConsoleSender().sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(""));
-            Bukkit.getConsoleSender().sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize("&cGemsEconomy Cheques functionality will at best be limited. Please don't come"));
-            Bukkit.getConsoleSender().sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize("&ccomplaining to me, the developer of GemsEconomy, when something breaks,"));
-            Bukkit.getConsoleSender().sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize("&cbecause running an unsupported version will cause exactly this. I do"));
-            Bukkit.getConsoleSender().sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize("&cin no way accept responsibility for ANY damage caused to a server running"));
-            Bukkit.getConsoleSender().sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize("&can unsupported version of Spigot. It is recommended that you change to"));
-            Bukkit.getConsoleSender().sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize("&ca supported version of Spigot. Supported versions are 1.13, 1.14 & 1.15."));
-            Bukkit.getConsoleSender().sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize("&c Versions marked with an asterisk (*) may have limited functionality."));
+            Bukkit.getConsoleSender().sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize("&cGemsEconomy Cheques functionality may be limited. Please don't come"));
+            Bukkit.getConsoleSender().sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize("&ccomplaining to the developer of GemsEconomy when something breaks,"));
+            Bukkit.getConsoleSender().sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize("&cbecause running an unsupported version can cause issues."));
+            Bukkit.getConsoleSender().sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize("&cIt is recommended that you change to a supported version of Spigot."));
+            Bukkit.getConsoleSender().sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize("&cPlease check the plugin's official page for a list of supported versions."));
             Bukkit.getConsoleSender().sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(""));
             Bukkit.getConsoleSender().sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize("&c----------------------------------------------------------"));
         }
@@ -90,6 +110,17 @@ public class NMSVersion {
         registerVersion(V1_16_R1);
         registerVersion(V1_16_R2);
         registerVersion(V1_16_R3);
+        registerVersion(V1_17_R1);
+        registerVersion(V1_18_R1);
+        registerVersion(V1_18_R2);
+        registerVersion(V1_19_R1);
+        registerVersion(V1_19_R2);
+        registerVersion(V1_19_R3);
+        registerVersion(V1_20_R1);
+        registerVersion(V1_20_R2);
+        registerVersion(V1_20_R3);
+        registerVersion(V1_20_R4);
+        registerVersion(V1_21_R1);
     }
 
     private void registerVersion(String string) {
