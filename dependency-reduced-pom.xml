@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.minekarta</groupId>
   <artifactId>GemsEconomyReloaded</artifactId>
-  <version>4.9.3</version>
+  <version>4.9.4</version>
   <description>GemsEconomy Reloaded plugin is a maintained version of the original plugin name GemsEconomy: https://github.com/Xanium1/GemsEconomy</description>
   <build>
     <plugins>
@@ -74,7 +74,7 @@
     <dependency>
       <groupId>io.papermc.paper</groupId>
       <artifactId>paper-api</artifactId>
-      <version>1.21-R0.1-SNAPSHOT</version>
+      <version>1.21.8-R0.1-SNAPSHOT</version>
       <scope>provided</scope>
     </dependency>
     <dependency>

@@ -1,11 +1,11 @@
 name: GemsEconomyReloaded
 main: me.xanium.gemseconomy.GemsEconomy
-version: 4.9.3
+version: 4.9.4
 author: Minekarta Studio
 description: 'GemsEconomy Reloaded plugin is a maintained version of the original plugin name GemsEconomy: https://github.com/Xanium1/GemsEconomy'
 website: https://www.spigotmc.org/resources/gemseconomy.19655/
 load: STARTUP
-api-version: 1.16
+api-version: 1.21
 loadbefore:
   - ItemFrameShops
 softdepend: [Vault]
