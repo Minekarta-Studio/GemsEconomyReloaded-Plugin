@@ -25,6 +25,7 @@
         <libs.dir>${project.basedir}${file.separator}libs</libs.dir>
         <package.dir>${project.build.directory}</package.dir>
         <package.name>${project.build.finalName}</package.name>
+        <adventure.version>4.17.0</adventure.version>
     </properties>
 
     <build>
@@ -50,7 +51,19 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>3.2.0</version>
+                <version>3.6.1</version>
+                <configuration>
+                    <relocations>
+                        <relocation>
+                            <pattern>net.kyori</pattern>
+                            <shadedPattern>me.xanium.gemseconomy.libs.kyori</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>net.kyori.adventure.platform</pattern>
+                            <shadedPattern>me.xanium.gemseconomy.libs.kyori.adventure.platform</shadedPattern>
+                        </relocation>
+                    </relocations>
+                </configuration>
                 <executions>
                     <execution>
                         <phase>package</phase>
@@ -81,6 +94,10 @@
             <id>jitpack.io</id>
             <url>https://jitpack.io</url>
         </repository>
+        <repository>
+            <id>central</id>
+            <url>https://repo1.maven.org/maven2/</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -89,6 +106,18 @@
             <artifactId>paper-api</artifactId>
             <version>1.21-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.kyori</groupId>
+            <artifactId>adventure-api</artifactId>
+            <version>${adventure.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.kyori</groupId>
+            <artifactId>adventure-text-minimessage</artifactId>
+            <version>${adventure.version}</version>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.github.MilkBowl</groupId>

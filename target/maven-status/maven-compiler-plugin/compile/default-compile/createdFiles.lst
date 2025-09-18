@@ -1,11 +1,11 @@
 me/xanium/gemseconomy/commands/EconomyCommand.class
 me/xanium/gemseconomy/utils/Metrics$AdvancedBarChart.class
 me/xanium/gemseconomy/currency/CachedTopList.class
-me/xanium/gemseconomy/utils/SchedulerUtils$1.class
 me/xanium/gemseconomy/utils/Metrics$DrilldownPie.class
 me/xanium/gemseconomy/nbt/NBTItem.class
 me/xanium/gemseconomy/commands/ChequeCommand.class
 me/xanium/gemseconomy/data/YamlStorage.class
+me/xanium/gemseconomy/utils/ModernChat.class
 me/xanium/gemseconomy/vault/GEVaultHook.class
 me/xanium/gemseconomy/currency/Currency.class
 me/xanium/gemseconomy/account/AccountManager.class
@@ -16,14 +16,12 @@ me/xanium/gemseconomy/utils/Metrics$1$1.class
 me/xanium/gemseconomy/commands/CurrencyCommand.class
 me/xanium/gemseconomy/currency/CachedTopListEntry.class
 me/xanium/gemseconomy/utils/TranactionType.class
-me/xanium/gemseconomy/utils/SchedulerUtils$TaskBuilder.class
 me/xanium/gemseconomy/data/Callback.class
 me/xanium/gemseconomy/utils/Metrics$1.class
 me/xanium/gemseconomy/nbt/NBTReflection.class
 me/xanium/gemseconomy/utils/UtilString.class
 me/xanium/gemseconomy/commands/ExchangeCommand.class
 me/xanium/gemseconomy/listeners/EconomyListener.class
-me/xanium/gemseconomy/utils/SchedulerUtils$3.class
 me/xanium/gemseconomy/commands/PayCommand.class
 me/xanium/gemseconomy/nbt/NMSVersion.class
 me/xanium/gemseconomy/utils/Metrics$SimpleBarChart.class
@@ -33,7 +31,6 @@ me/xanium/gemseconomy/data/DataStorage.class
 me/xanium/gemseconomy/file/Configuration.class
 me/xanium/gemseconomy/GemsEconomy.class
 me/xanium/gemseconomy/logging/AbstractLogger.class
-me/xanium/gemseconomy/utils/SchedulerUtils$Task.class
 me/xanium/gemseconomy/event/GemsConversionEvent.class
 me/xanium/gemseconomy/utils/Metrics$SimplePie.class
 me/xanium/gemseconomy/utils/Metrics$SingleLineChart.class
@@ -41,7 +38,6 @@ me/xanium/gemseconomy/vault/VaultHandler.class
 me/xanium/gemseconomy/utils/Metrics$CustomChart.class
 me/xanium/gemseconomy/currency/CurrencyManager.class
 me/xanium/gemseconomy/file/F.class
-me/xanium/gemseconomy/utils/SchedulerUtils$2.class
 me/xanium/gemseconomy/utils/Metrics.class
 me/xanium/gemseconomy/cheque/ChequeManager.class
 me/xanium/gemseconomy/utils/Metrics$2.class
@@ -54,5 +50,4 @@ me/xanium/gemseconomy/utils/Updater.class
 me/xanium/gemseconomy/event/GemsTransactionEvent.class
 me/xanium/gemseconomy/account/Account.class
 me/xanium/gemseconomy/utils/SchedulerUtils.class
-me/xanium/gemseconomy/utils/SchedulerUtils$TaskBuilder$1.class
 me/xanium/gemseconomy/utils/UtilServer.class

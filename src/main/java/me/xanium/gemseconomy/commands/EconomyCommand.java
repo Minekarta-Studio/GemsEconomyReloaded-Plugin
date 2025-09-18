@@ -12,6 +12,8 @@ import me.xanium.gemseconomy.GemsEconomy;
 import me.xanium.gemseconomy.account.Account;
 import me.xanium.gemseconomy.currency.Currency;
 import me.xanium.gemseconomy.file.F;
+import me.xanium.gemseconomy.utils.ModernChat;
+import me.xanium.gemseconomy.utils.SchedulerUtils;
 import me.xanium.gemseconomy.utils.UtilServer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -24,7 +26,7 @@ public class EconomyCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String s124, String[] args) {
         if (!sender.hasPermission("gemseconomy.command.economy")) {
-            sender.sendMessage(F.getNoPerms());
+            ModernChat.send(sender, F.getNoPerms());
             return true;
         }
 
@@ -35,19 +37,19 @@ public class EconomyCommand implements CommandExecutor {
 
         if (args[0].equalsIgnoreCase("give") || args[0].equalsIgnoreCase("add")) {
             if (!sender.hasPermission("gemseconomy.command.give")) {
-                sender.sendMessage(F.getNoPerms());
+                ModernChat.send(sender, F.getNoPerms());
                 return true;
             }
             changeBalance(sender, args, false);
         } else if (args[0].equalsIgnoreCase("take") || args[0].equalsIgnoreCase("remove")) {
             if (!sender.hasPermission("gemseconomy.command.take")) {
-                sender.sendMessage(F.getNoPerms());
+                ModernChat.send(sender, F.getNoPerms());
                 return true;
             }
             changeBalance(sender, args, true);
         } else if (args[0].equalsIgnoreCase("set")) {
             if (!sender.hasPermission("gemseconomy.command.set")) {
-                sender.sendMessage(F.getNoPerms());
+                ModernChat.send(sender, F.getNoPerms());
                 return true;
             }
             set(sender, args);
@@ -56,16 +58,16 @@ public class EconomyCommand implements CommandExecutor {
                 UtilServer.consoleLog("Account: " + a.getNickname() + " cached");
             }
         } else {
-            sender.sendMessage(F.getUnknownSubCommand());
+            ModernChat.send(sender, F.getUnknownSubCommand());
         }
         return true;
     }
 
     private void changeBalance(CommandSender sender, String[] args, boolean withdraw) {
-        plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
+        SchedulerUtils.runAsync(() -> {
             if (!withdraw) {
                 if (args.length < 3) {
-                    sender.sendMessage(F.getGiveUsage());
+                    ModernChat.send(sender, F.getGiveUsage());
                     return;
                 }
                 Currency currency = plugin.getCurrencyManager().getDefaultCurrency();
@@ -81,7 +83,7 @@ public class EconomyCommand implements CommandExecutor {
                                 throw new NumberFormatException();
                             }
                         } catch (NumberFormatException ex) {
-                            sender.sendMessage(F.getUnvalidAmount());
+                            ModernChat.send(sender, F.getUnvalidAmount());
                             return;
                         }
                     } else {
@@ -91,7 +93,7 @@ public class EconomyCommand implements CommandExecutor {
                                 throw new NumberFormatException();
                             }
                         } catch (NumberFormatException ex) {
-                            sender.sendMessage(F.getUnvalidAmount());
+                            ModernChat.send(sender, F.getUnvalidAmount());
                             return;
                         }
                     }
@@ -99,20 +101,20 @@ public class EconomyCommand implements CommandExecutor {
                     Account target = plugin.getAccountManager().getAccount(args[1]);
                     if (target != null) {
                         if (target.deposit(currency, amount)) {
-                            sender.sendMessage(F.getAddMessage()
+                            ModernChat.send(sender, F.getRaw("Messages.add")
                                     .replace("{player}", target.getNickname())
                                     .replace("{currencycolor}", currency.getColor() + "")
                                     .replace("{amount}", currency.format(amount)));
                         }
                     } else {
-                        sender.sendMessage(F.getPlayerDoesNotExist());
+                        ModernChat.send(sender, F.getPlayerDoesNotExist());
                     }
                 } else {
-                    sender.sendMessage(F.getUnknownCurrency());
+                    ModernChat.send(sender, F.getUnknownCurrency());
                 }
             } else {
                 if (args.length < 3) {
-                    sender.sendMessage(F.getTakeUsage());
+                    ModernChat.send(sender, F.getTakeUsage());
                     return;
                 }
                 Currency currency = plugin.getCurrencyManager().getDefaultCurrency();
@@ -129,7 +131,7 @@ public class EconomyCommand implements CommandExecutor {
                                 throw new NumberFormatException();
                             }
                         } catch (NumberFormatException ex) {
-                            sender.sendMessage(F.getUnvalidAmount());
+                            ModernChat.send(sender, F.getUnvalidAmount());
                             return;
                         }
                     } else {
@@ -139,37 +141,37 @@ public class EconomyCommand implements CommandExecutor {
                                 throw new NumberFormatException();
                             }
                         } catch (NumberFormatException ex) {
-                            sender.sendMessage(F.getUnvalidAmount());
+                            ModernChat.send(sender, F.getUnvalidAmount());
                             return;
                         }
                     }
                     Account target = plugin.getAccountManager().getAccount(args[1]);
                     if (target != null) {
                         if (target.withdraw(currency, amount)) {
-                            sender.sendMessage(F.getTakeMessage()
+                            ModernChat.send(sender, F.getRaw("Messages.take")
                                     .replace("{player}", target.getNickname())
                                     .replace("{currencycolor}", currency.getColor() + "")
                                     .replace("{amount}", currency.format(amount)));
                         } else {
-                            sender.sendMessage(F.getTargetInsufficientFunds()
+                            ModernChat.send(sender, F.getRaw("Messages.targetInsufficientFunds")
                                     .replace("{currencycolor}", currency.getColor() + "")
                                     .replace("{currency}", currency.getPlural())
                                     .replace("{target}", target.getDisplayName()));
                         }
                     } else {
-                        sender.sendMessage(F.getPlayerDoesNotExist());
+                        ModernChat.send(sender, F.getPlayerDoesNotExist());
                     }
                 } else {
-                    sender.sendMessage(F.getUnknownCurrency());
+                    ModernChat.send(sender, F.getUnknownCurrency());
                 }
             }
         });
     }
 
     private void set(CommandSender sender, String[] args){
-        plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
+        SchedulerUtils.runAsync(() -> {
             if (args.length < 3) {
-                sender.sendMessage(F.getSetUsage());
+                ModernChat.send(sender, F.getSetUsage());
                 return;
             }
             Currency currency = plugin.getCurrencyManager().getDefaultCurrency();
@@ -182,29 +184,29 @@ public class EconomyCommand implements CommandExecutor {
                     try {
                         amount = Double.parseDouble(args[2]);
                     } catch (NumberFormatException ex) {
-                        sender.sendMessage(F.getUnvalidAmount());
+                        ModernChat.send(sender, F.getUnvalidAmount());
                         return;
                     }
                 } else {
                     try {
                         amount = Integer.parseInt(args[2]);
                     } catch (NumberFormatException ex) {
-                        sender.sendMessage(F.getUnvalidAmount());
+                        ModernChat.send(sender, F.getUnvalidAmount());
                         return;
                     }
                 }
                 Account target = plugin.getAccountManager().getAccount(args[1]);
                 if (target != null) {
                     target.setBalance(currency, amount);
-                    sender.sendMessage(F.getSetMessage()
+                    ModernChat.send(sender, F.getRaw("Messages.set")
                             .replace("{player}", target.getNickname())
                             .replace("{currencycolor}", currency.getColor() + "")
                             .replace("{amount}", currency.format(amount)));
                 } else {
-                    sender.sendMessage(F.getPlayerDoesNotExist());
+                    ModernChat.send(sender, F.getPlayerDoesNotExist());
                 }
             } else {
-                sender.sendMessage(F.getUnknownCurrency());
+                ModernChat.send(sender, F.getUnknownCurrency());
             }
         });
     }

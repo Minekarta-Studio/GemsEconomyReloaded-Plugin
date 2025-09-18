@@ -15,9 +15,10 @@ import me.xanium.gemseconomy.account.Account;
 import me.xanium.gemseconomy.currency.CachedTopList;
 import me.xanium.gemseconomy.currency.CachedTopListEntry;
 import me.xanium.gemseconomy.currency.Currency;
+import me.xanium.gemseconomy.utils.ModernChat;
 import me.xanium.gemseconomy.utils.SchedulerUtils;
-import me.xanium.gemseconomy.utils.UtilServer;
 import net.kyori.adventure.text.format.NamedTextColor;
+import org.bukkit.Bukkit;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -86,11 +87,11 @@ public class MySQLStorage extends DataStorage {
             try (ResultSet tableResultSet = metaData.getTables(null, "public", null, new String[]{"TABLE"})) {
                 while (tableResultSet.next()) {
                     String tableName = tableResultSet.getString("TABLE_NAME");
-                    UtilServer.consoleLog("Table: " + tableName);
+                    ModernChat.send(Bukkit.getConsoleSender(), "Table: " + tableName);
 
                     if(tableName.startsWith(getTablePrefix())) {
                         structure.put(tableName, new ArrayList<>());
-                        UtilServer.consoleLog("Added table");
+                        ModernChat.send(Bukkit.getConsoleSender(), "Added table");
                     }
                 }
             }
@@ -100,7 +101,7 @@ public class MySQLStorage extends DataStorage {
                     while (columnResultSet.next()) {
                         String columnName = columnResultSet.getString("COLUMN_NAME");
                         structure.get(table).add(columnName);
-                        UtilServer.consoleLog("Column: " + columnName + " (" + table + ")");
+                        ModernChat.send(Bukkit.getConsoleSender(), "Column: " + columnName + " (" + table + ")");
                     }
                 }
             }
@@ -111,7 +112,7 @@ public class MySQLStorage extends DataStorage {
                     stmt = connection.prepareStatement("ALTER TABLE " + this.currencyTable + " ADD exchange_rate DECIMAL NULL DEFAULT NULL AFTER `color`;");
                     stmt.execute();
 
-                    UtilServer.consoleLog("Altered Table " + this.currencyTable + " to support the new exchange_rate variable.");
+                    ModernChat.send(Bukkit.getConsoleSender(), "Altered Table " + this.currencyTable + " to support the new exchange_rate variable.");
                 }
             }
 
@@ -136,7 +137,7 @@ public class MySQLStorage extends DataStorage {
                     stmt = connection.prepareStatement("ALTER TABLE " + this.currencyTable + " ADD PRIMARY KEY (uuid)");
                     stmt.execute();
 
-                    UtilServer.consoleLog("Altered Tables " + this.accountsTable + " to support the new balance data saving");
+                    ModernChat.send(Bukkit.getConsoleSender(), "Altered Tables " + this.accountsTable + " to support the new balance data saving");
                 }
             }
         } catch (SQLException e) {
@@ -180,7 +181,7 @@ public class MySQLStorage extends DataStorage {
                 currency.setExchangeRate(exchangeRate);
 
                 plugin.getCurrencyManager().add(currency);
-                UtilServer.consoleLog("Loaded currency: " + currency.getSingular() + " (" + currency.getPlural() + ")");
+                ModernChat.send(Bukkit.getConsoleSender(), "Loaded currency: " + currency.getSingular() + " (" + currency.getPlural() + ")");
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -209,7 +210,7 @@ public class MySQLStorage extends DataStorage {
                 currency.setPayable(payable);
                 currency.setColor(color);
                 currency.setExchangeRate(exchangeRate);
-                UtilServer.consoleLog("Updated currency: " + currency.getPlural());
+                ModernChat.send(Bukkit.getConsoleSender(), "Updated currency: " + currency.getPlural());
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -294,7 +295,7 @@ public class MySQLStorage extends DataStorage {
                 LinkedList<CachedTopListEntry> list = new LinkedList<>();
                 for(String name : sorted.keySet()){
                     list.add(new CachedTopListEntry(name, sorted.get(name)));
-                    UtilServer.consoleLog(name + ": " + sorted.get(name));
+                    ModernChat.send(Bukkit.getConsoleSender(), name + ": " + sorted.get(name));
                 }
                 topList.setResults(list);
                 this.topList.put(currency.getUuid(), topList);

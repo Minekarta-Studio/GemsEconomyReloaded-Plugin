@@ -9,7 +9,7 @@
 package me.xanium.gemseconomy.vault;
 
 import me.xanium.gemseconomy.GemsEconomy;
-import me.xanium.gemseconomy.utils.UtilServer;
+import me.xanium.gemseconomy.utils.ModernChat;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.ServicePriority;
@@ -31,14 +31,14 @@ public class VaultHandler {
             }
 
             if(plugin.getCurrencyManager().getDefaultCurrency() == null){
-                UtilServer.consoleLog("No Default currency found. Vault linking disabled!");
+                ModernChat.send(Bukkit.getConsoleSender(), "<red>No Default currency found. Vault linking disabled!</red>");
                 return;
             }
 
             ServicesManager sm = Bukkit.getServicesManager();
             sm.register(Economy.class, this.economy, plugin, ServicePriority.Highest);
 
-            UtilServer.consoleLog("Vault link enabled.");
+            ModernChat.send(Bukkit.getConsoleSender(), "<green>Vault link enabled.</green>");
         } catch (Exception e) {
             e.printStackTrace();
         }

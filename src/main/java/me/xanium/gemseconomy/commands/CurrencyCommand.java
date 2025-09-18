@@ -25,6 +25,7 @@ import me.xanium.gemseconomy.account.Account;
 import me.xanium.gemseconomy.currency.Currency;
 import me.xanium.gemseconomy.data.DataStorage;
 import me.xanium.gemseconomy.file.F;
+import me.xanium.gemseconomy.utils.ModernChat;
 import me.xanium.gemseconomy.utils.SchedulerUtils;
 import me.xanium.gemseconomy.utils.UtilServer;
 import me.xanium.gemseconomy.utils.UtilString;
@@ -46,7 +47,7 @@ public class CurrencyCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String s124, String[] args) {
         SchedulerUtils.runAsync(() -> {
             if (!sender.hasPermission("gemseconomy.command.currency")) {
-                sender.sendMessage(F.getNoPerms());
+                ModernChat.send(sender, F.getNoPerms());
                 return;
             }
             if (args.length == 0) {
@@ -58,37 +59,37 @@ public class CurrencyCommand implements CommandExecutor {
                         String single = args[1];
                         String plural = args[2];
                         if (plugin.getCurrencyManager().currencyExist(single) || plugin.getCurrencyManager().currencyExist(plural)) {
-                            sender.sendMessage(F.getPrefix() + "§cCurrency already exists.");
+                            ModernChat.send(sender, F.getRawPrefix() + "§cCurrency already exists.");
                             return;
                         }
 
                         plugin.getCurrencyManager().createNewCurrency(single, plural);
-                        sender.sendMessage(F.getPrefix() + "§7Created currency: §a" + single);
+                        ModernChat.send(sender, F.getRawPrefix() + "§7Created currency: §a" + single);
                     } else {
-                        sender.sendMessage(F.getCurrencyUsage_Create());
+                        ModernChat.send(sender, F.getCurrencyUsage_Create());
                     }
                 } else if (cmd.equalsIgnoreCase("list")) {
-                    sender.sendMessage(F.getPrefix() + "§7There are §f" + plugin.getCurrencyManager().getCurrencies().size() + "§7 currencies.");
+                    ModernChat.send(sender, F.getRawPrefix() + "§7There are §f" + plugin.getCurrencyManager().getCurrencies().size() + "§7 currencies.");
                     for (Currency currency : plugin.getCurrencyManager().getCurrencies()) {
-                        sender.sendMessage("§a§l>> §e" + currency.getSingular());
+                        ModernChat.send(sender, "§a§l>> §e" + currency.getSingular());
                     }
                 } else if (cmd.equalsIgnoreCase("view")) {
                     if (args.length == 2) {
                         Currency currency = plugin.getCurrencyManager().getCurrency(args[1]);
                         if (currency != null) {
-                            sender.sendMessage(F.getPrefix() + "§7ID: §c" + currency.getUuid().toString());
-                            sender.sendMessage(F.getPrefix() + "§7Singular: §a" + currency.getSingular() + "§7, Plural: §a" + currency.getPlural());
-                            sender.sendMessage(F.getPrefix() + "§7Start Balance: §f" + currency.format(currency.getDefaultBalance()));
-                            sender.sendMessage(F.getPrefix() + "§7Decimals: " + (currency.isDecimalSupported() ? "§aYes" : "§cNo"));
-                            sender.sendMessage(F.getPrefix() + "§7Default: " + (currency.isDefaultCurrency() ? "§aYes" : "§cNo"));
-                            sender.sendMessage(F.getPrefix() + "§7Payable: " + (currency.isPayable() ? "§aYes" : "§cNo"));
-                            sender.sendMessage(F.getPrefix() + "§7Color: §f" + currency.getColor().toString());
-                            sender.sendMessage(F.getPrefix() + "§7Rate: §f" + currency.getExchangeRate());
+                            ModernChat.send(sender, F.getRawPrefix() + "§7ID: §c" + currency.getUuid().toString());
+                            ModernChat.send(sender, F.getRawPrefix() + "§7Singular: §a" + currency.getSingular() + "§7, Plural: §a" + currency.getPlural());
+                            ModernChat.send(sender, F.getRawPrefix() + "§7Start Balance: §f" + currency.format(currency.getDefaultBalance()));
+                            ModernChat.send(sender, F.getRawPrefix() + "§7Decimals: " + (currency.isDecimalSupported() ? "§aYes" : "§cNo"));
+                            ModernChat.send(sender, F.getRawPrefix() + "§7Default: " + (currency.isDefaultCurrency() ? "§aYes" : "§cNo"));
+                            ModernChat.send(sender, F.getRawPrefix() + "§7Payable: " + (currency.isPayable() ? "§aYes" : "§cNo"));
+                            ModernChat.send(sender, F.getRawPrefix() + "§7Color: §f" + currency.getColor().toString());
+                            ModernChat.send(sender, F.getRawPrefix() + "§7Rate: §f" + currency.getExchangeRate());
                         } else {
-                            sender.sendMessage(F.getUnknownCurrency());
+                            ModernChat.send(sender, F.getUnknownCurrency());
                         }
                     } else {
-                        sender.sendMessage(F.getCurrencyUsage_View());
+                        ModernChat.send(sender, F.getCurrencyUsage_View());
                     }
                 } else if (cmd.equalsIgnoreCase("startbal")) {
                     if (args.length == 3) {
@@ -105,7 +106,7 @@ public class CurrencyCommand implements CommandExecutor {
                                         }
                                         break block76;
                                     } catch (NumberFormatException ex) {
-                                        sender.sendMessage(F.getUnvalidAmount());
+                                        ModernChat.send(sender, F.getUnvalidAmount());
                                         return;
                                     }
                                 }
@@ -115,18 +116,18 @@ public class CurrencyCommand implements CommandExecutor {
                                         throw new NumberFormatException();
                                     }
                                 } catch (NumberFormatException ex) {
-                                    sender.sendMessage(F.getUnvalidAmount());
+                                    ModernChat.send(sender, F.getUnvalidAmount());
                                     return;
                                 }
                             }
                             currency.setDefaultBalance(amount);
-                            sender.sendMessage(F.getPrefix() + "§7Starting balance for §f" + currency.getPlural() + " §7set: §a" + UtilString.format(currency.getDefaultBalance()));
+                            ModernChat.send(sender, F.getRawPrefix() + "§7Starting balance for §f" + currency.getPlural() + " §7set: §a" + UtilString.format(currency.getDefaultBalance()));
                             plugin.getDataStore().saveCurrency(currency);
                         } else {
-                            sender.sendMessage(F.getUnknownCurrency());
+                            ModernChat.send(sender, F.getUnknownCurrency());
                         }
                     } else {
-                        sender.sendMessage(F.getCurrencyUsage_Startbal());
+                        ModernChat.send(sender, F.getCurrencyUsage_Startbal());
                     }
                 } else if (cmd.equalsIgnoreCase("color")) {
                     if (args.length == 3) {
@@ -135,19 +136,19 @@ public class CurrencyCommand implements CommandExecutor {
                             NamedTextColor color = NamedTextColor.NAMES.value(args[2].toLowerCase());
                             if (color != null) {
                                 currency.setColor(color);
-                                sender.sendMessage(F.getPrefix() + "§7Color for §f" + currency.getPlural() + " §7updated: §f" + color);
+                                ModernChat.send(sender, F.getRawPrefix() + "§7Color for §f" + currency.getPlural() + " §7updated: §f" + color);
                                 plugin.getDataStore().saveCurrency(currency);
                             } else {
-                                sender.sendMessage(F.getPrefix() + "§cInvalid chat color.");
+                                ModernChat.send(sender, F.getRawPrefix() + "§cInvalid chat color.");
                             }
                         } else {
-                            sender.sendMessage(F.getUnknownCurrency());
+                            ModernChat.send(sender, F.getUnknownCurrency());
                         }
                     } else {
-                        sender.sendMessage(F.getCurrencyUsage_Color());
+                        ModernChat.send(sender, F.getCurrencyUsage_Color());
                     }
                 } else if (cmd.equalsIgnoreCase("colorlist")) {
-                    sender.sendMessage(String.join(", ", NamedTextColor.NAMES.keys()));
+                    ModernChat.send(sender, String.join(", ", NamedTextColor.NAMES.keys()));
                 } else if (cmd.equalsIgnoreCase("symbol")) {
                     if (args.length == 3) {
                         Currency currency = plugin.getCurrencyManager().getCurrency(args[1]);
@@ -155,20 +156,20 @@ public class CurrencyCommand implements CommandExecutor {
                             String symbol = args[2];
                             if (symbol.equalsIgnoreCase("remove")) {
                                 currency.setSymbol(null);
-                                sender.sendMessage(F.getPrefix() + "§7Currency symbol removed for §f" + currency.getPlural());
+                                ModernChat.send(sender, F.getRawPrefix() + "§7Currency symbol removed for §f" + currency.getPlural());
                                 plugin.getDataStore().saveCurrency(currency);
                             } else if (symbol.length() == 1) {
                                 currency.setSymbol(symbol);
-                                sender.sendMessage(F.getPrefix() + "§7Currency symbol for §f" + currency.getPlural() + " §7updated: §a" + symbol);
+                                ModernChat.send(sender, F.getRawPrefix() + "§7Currency symbol for §f" + currency.getPlural() + " §7updated: §a" + symbol);
                                 plugin.getDataStore().saveCurrency(currency);
                             } else {
-                                sender.sendMessage(F.getPrefix() + "§7Symbol must be 1 character, or remove it with \"remove\".");
+                                ModernChat.send(sender, F.getRawPrefix() + "§7Symbol must be 1 character, or remove it with \"remove\".");
                             }
                         } else {
-                            sender.sendMessage(F.getUnknownCurrency());
+                            ModernChat.send(sender, F.getUnknownCurrency());
                         }
                     } else {
-                        sender.sendMessage(F.getCurrencyUsage_Symbol());
+                        ModernChat.send(sender, F.getCurrencyUsage_Symbol());
                     }
                 } else if (cmd.equalsIgnoreCase("default")) {
                     if (args.length == 2) {
@@ -180,39 +181,39 @@ public class CurrencyCommand implements CommandExecutor {
                                 plugin.getDataStore().saveCurrency(c);
                             }
                             currency.setDefaultCurrency(true);
-                            sender.sendMessage(F.getPrefix() + "§7Set default currency to §f" + currency.getPlural());
+                            ModernChat.send(sender, F.getRawPrefix() + "§7Set default currency to §f" + currency.getPlural());
                             plugin.getDataStore().saveCurrency(currency);
                         } else {
-                            sender.sendMessage(F.getUnknownCurrency());
+                            ModernChat.send(sender, F.getUnknownCurrency());
                         }
                     } else {
-                        sender.sendMessage(F.getCurrencyUsage_Default());
+                        ModernChat.send(sender, F.getCurrencyUsage_Default());
                     }
                 } else if (cmd.equalsIgnoreCase("payable")) {
                     if (args.length == 2) {
                         Currency currency = plugin.getCurrencyManager().getCurrency(args[1]);
                         if (currency != null) {
                             currency.setPayable(!currency.isPayable());
-                            sender.sendMessage(F.getPrefix() + "§7Toggled payability for §f" + currency.getPlural() + "§7: " + (currency.isPayable() ? "§aYes" : "§cNo"));
+                            ModernChat.send(sender, F.getRawPrefix() + "§7Toggled payability for §f" + currency.getPlural() + "§7: " + (currency.isPayable() ? "§aYes" : "§cNo"));
                             plugin.getDataStore().saveCurrency(currency);
                         } else {
-                            sender.sendMessage(F.getUnknownCurrency());
+                            ModernChat.send(sender, F.getUnknownCurrency());
                         }
                     } else {
-                        sender.sendMessage(F.getCurrencyUsage_Payable());
+                        ModernChat.send(sender, F.getCurrencyUsage_Payable());
                     }
                 } else if (cmd.equalsIgnoreCase("decimals")) {
                     if (args.length == 2) {
                         Currency currency = plugin.getCurrencyManager().getCurrency(args[1]);
                         if (currency != null) {
                             currency.setDecimalSupported(!currency.isDecimalSupported());
-                            sender.sendMessage(F.getPrefix() + "§7Toggled Decimal Support for §f" + currency.getPlural() + "§7: " + (currency.isDecimalSupported() ? "§aYes" : "§cNo"));
+                            ModernChat.send(sender, F.getRawPrefix() + "§7Toggled Decimal Support for §f" + currency.getPlural() + "§7: " + (currency.isDecimalSupported() ? "§aYes" : "§cNo"));
                             plugin.getDataStore().saveCurrency(currency);
                         } else {
-                            sender.sendMessage(F.getUnknownCurrency());
+                            ModernChat.send(sender, F.getUnknownCurrency());
                         }
                     } else {
-                        sender.sendMessage(F.getCurrencyUsage_Decimals());
+                        ModernChat.send(sender, F.getCurrencyUsage_Decimals());
                     }
                 } else if (cmd.equalsIgnoreCase("delete")) {
                     if (args.length == 2) {
@@ -221,12 +222,12 @@ public class CurrencyCommand implements CommandExecutor {
                             plugin.getAccountManager().getAccounts().stream().filter(account -> account.getBalances().containsKey(currency)).forEach(account -> account.getBalances().remove(currency));
                             plugin.getDataStore().deleteCurrency(currency);
                             plugin.getCurrencyManager().getCurrencies().remove(currency);
-                            sender.sendMessage(F.getPrefix() + "§7Deleted currency: §a" + currency.getPlural());
+                            ModernChat.send(sender, F.getRawPrefix() + "§7Deleted currency: §a" + currency.getPlural());
                         } else {
-                            sender.sendMessage(F.getUnknownCurrency());
+                            ModernChat.send(sender, F.getUnknownCurrency());
                         }
                     } else {
-                        sender.sendMessage(F.getCurrencyUsage_Delete());
+                        ModernChat.send(sender, F.getCurrencyUsage_Delete());
                     }
                 } else if (cmd.equalsIgnoreCase("setrate")) {
                     if (args.length == 3) {
@@ -240,17 +241,17 @@ public class CurrencyCommand implements CommandExecutor {
                                     throw new NumberFormatException();
                                 }
                             } catch (NumberFormatException ex) {
-                                sender.sendMessage(F.getUnvalidAmount());
+                                ModernChat.send(sender, F.getUnvalidAmount());
                                 return;
                             }
                             currency.setExchangeRate(amount);
                             plugin.getDataStore().saveCurrency(currency);
-                            sender.sendMessage(F.getExchangeRateSet().replace("{currencycolor}", currency.getColor().toString()).replace("{currency}", currency.getPlural()).replace("{amount}", String.valueOf(amount)));
+                            ModernChat.send(sender, F.getRaw("Messages.exchange_rate_set").replace("{currencycolor}", currency.getColor().toString()).replace("{currency}", currency.getPlural()).replace("{amount}", String.valueOf(amount)));
                         } else {
-                            sender.sendMessage(F.getUnknownCurrency());
+                            ModernChat.send(sender, F.getUnknownCurrency());
                         }
                     } else {
-                        sender.sendMessage(F.getCurrencyUsage_Rate());
+                        ModernChat.send(sender, F.getCurrencyUsage_Rate());
                     }
                 } else if (cmd.equalsIgnoreCase("convert")) {
                     if (args.length == 2) {
@@ -259,23 +260,23 @@ public class CurrencyCommand implements CommandExecutor {
                         DataStorage ds = DataStorage.getMethod(method);
 
                         if (current == null) {
-                            sender.sendMessage(F.getPrefix() + "§7Current Data Store is null. Did something go wrong on startup?");
+                            ModernChat.send(sender, F.getRawPrefix() + "§7Current Data Store is null. Did something go wrong on startup?");
                             return;
                         }
 
                         if (ds != null) {
                             if (current.getName().equalsIgnoreCase(ds.getName())) {
-                                sender.sendMessage(F.getPrefix() + "§7You can't convert to the same datastore.");
+                                ModernChat.send(sender, F.getRawPrefix() + "§7You can't convert to the same datastore.");
                                 return;
                             }
 
                             plugin.getConfig().set("storage", ds.getName());
                             plugin.saveConfig();
 
-                            sender.sendMessage(F.getPrefix() + "§aLoading data..");
+                            ModernChat.send(sender, F.getRawPrefix() + "§aLoading data..");
                             plugin.getAccountManager().getAccounts().clear();
 
-                            sender.sendMessage(F.getPrefix() + "§aStored accounts.");
+                            ModernChat.send(sender, F.getRawPrefix() + "§aStored accounts.");
                             ArrayList<Account> offline = new ArrayList<>(plugin.getDataStore().getOfflineAccounts());
                             UtilServer.consoleLog("Stored Accounts: " + offline.size());
                             if (GemsEconomy.getInstance().isDebug()) {
@@ -288,7 +289,7 @@ public class CurrencyCommand implements CommandExecutor {
                             }
 
                             ArrayList<Currency> currencies = new ArrayList<>(plugin.getCurrencyManager().getCurrencies());
-                            sender.sendMessage(F.getPrefix() + "§aStored currencies.");
+                            ModernChat.send(sender, F.getRawPrefix() + "§aStored currencies.");
                             plugin.getCurrencyManager().getCurrencies().clear();
 
                             if (plugin.isDebug()) {
@@ -297,7 +298,7 @@ public class CurrencyCommand implements CommandExecutor {
                                 }
                             }
 
-                            sender.sendMessage(F.getPrefix() + "§aSwitching from §f" + current.getName() + " §ato §f" + ds.getName() + "§a.");
+                            ModernChat.send(sender, F.getRawPrefix() + "§aSwitching from §f" + current.getName() + " §ato §f" + ds.getName() + "§a.");
 
                             if (ds.getName().equalsIgnoreCase("yaml")) {
                                 SchedulerUtils.run(() -> {
@@ -311,7 +312,7 @@ public class CurrencyCommand implements CommandExecutor {
                             if (plugin.getDataStore() != null) {
                                 plugin.getDataStore().close();
 
-                                sender.sendMessage(F.getPrefix() + "§aDataStore is closed. Plugin is essentially dead now.");
+                                ModernChat.send(sender, F.getRawPrefix() + "§aDataStore is closed. Plugin is essentially dead now.");
                             }
 
                             plugin.initializeDataStore(ds.getName(), false);
@@ -321,8 +322,8 @@ public class CurrencyCommand implements CommandExecutor {
                                 ex.printStackTrace();
                             }
 
-                            sender.sendMessage(F.getPrefix() + "§aInitialized " + ds.getName() + " Data Store. Check console for wrong username/password if using mysql.");
-                            sender.sendMessage(F.getPrefix() + "§aIf there are sql login errors, you can just retry after you have fixed the credentials, changed the datastore back to what you were using and restarted the server!");
+                            ModernChat.send(sender, F.getRawPrefix() + "§aInitialized " + ds.getName() + " Data Store. Check console for wrong username/password if using mysql.");
+                            ModernChat.send(sender, F.getRawPrefix() + "§aIf there are sql login errors, you can just retry after you have fixed the credentials, changed the datastore back to what you were using and restarted the server!");
 
                             if (plugin.getDataStore().getName() != null) {
                                 for (Currency c : currencies) {
@@ -336,9 +337,9 @@ public class CurrencyCommand implements CommandExecutor {
                                     newCurrency.setDefaultBalance(c.getDefaultBalance());
                                     plugin.getDataStore().saveCurrency(newCurrency);
                                 }
-                                sender.sendMessage(F.getPrefix() + "§aSaved currencies to storage.");
+                                ModernChat.send(sender, F.getRawPrefix() + "§aSaved currencies to storage.");
                                 plugin.getDataStore().loadCurrencies();
-                                sender.sendMessage(F.getPrefix() + "§aLoaded all currencies as usual.");
+                                ModernChat.send(sender, F.getRawPrefix() + "§aLoaded all currencies as usual.");
 
                                 try {
                                     Thread.sleep(2000);
@@ -349,7 +350,7 @@ public class CurrencyCommand implements CommandExecutor {
                                 for (Account a : offline) {
                                     plugin.getDataStore().saveAccount(a);
                                 }
-                                sender.sendMessage(F.getPrefix() + "§aAll accounts saved to storage.");
+                                ModernChat.send(sender, F.getRawPrefix() + "§aAll accounts saved to storage.");
 
                                 try {
                                     Thread.sleep(2000);
@@ -360,14 +361,14 @@ public class CurrencyCommand implements CommandExecutor {
                                 for (Player players : Bukkit.getOnlinePlayers()) {
                                     plugin.getDataStore().loadAccount(players.getUniqueId(), account -> plugin.getAccountManager().add(account));
                                 }
-                                sender.sendMessage(F.getPrefix() + "§aLoaded all accounts for online players.");
-                                sender.sendMessage(F.getPrefix() + "§aData storage conversion is done.");
+                                ModernChat.send(sender, F.getRawPrefix() + "§aLoaded all accounts for online players.");
+                                ModernChat.send(sender, F.getRawPrefix() + "§aData storage conversion is done.");
                             }
                         } else {
-                            sender.sendMessage(F.getPrefix() + "§cData Storing method not found.");
+                            ModernChat.send(sender, F.getRawPrefix() + "§cData Storing method not found.");
                         }
                     } else {
-                        sender.sendMessage(F.getCurrencyUsage_Convert());
+                        ModernChat.send(sender, F.getCurrencyUsage_Convert());
                     }
                 } else if (cmd.equalsIgnoreCase("backend")) {
                     if (args.length == 2) {
@@ -376,13 +377,13 @@ public class CurrencyCommand implements CommandExecutor {
                         DataStorage ds = DataStorage.getMethod(method);
 
                         if (current == null) {
-                            sender.sendMessage(F.getPrefix() + "§7Current Data Store is null. Did something go wrong on startup?");
+                            ModernChat.send(sender, F.getRawPrefix() + "§7Current Data Store is null. Did something go wrong on startup?");
                             return;
                         }
 
                         if (ds != null) {
                             if (current.getName().equalsIgnoreCase(ds.getName())) {
-                                sender.sendMessage(F.getPrefix() + "§7You can't convert to the same datastore.");
+                                ModernChat.send(sender, F.getRawPrefix() + "§7You can't convert to the same datastore.");
                                 return;
                             }
 
@@ -390,7 +391,7 @@ public class CurrencyCommand implements CommandExecutor {
                             plugin.getConfig().set("storage", ds.getName());
                             plugin.saveConfig();
 
-                            sender.sendMessage(F.getPrefix() + "§aSaving data and closing up...");
+                            ModernChat.send(sender, F.getRawPrefix() + "§aSaving data and closing up...");
 
                             if (plugin.getDataStore() != null) {
                                 plugin.getDataStore().close();
@@ -398,10 +399,10 @@ public class CurrencyCommand implements CommandExecutor {
                                 plugin.getAccountManager().getAccounts().clear();
                                 plugin.getCurrencyManager().getCurrencies().clear();
 
-                                sender.sendMessage(F.getPrefix() + "§aSuccessfully shutdown. Booting..");
+                                ModernChat.send(sender, F.getRawPrefix() + "§aSuccessfully shutdown. Booting..");
                             }
 
-                            sender.sendMessage(F.getPrefix() + "§aSwitching from §f" + current.getName() + " §ato §f" + ds.getName() + "§a.");
+                            ModernChat.send(sender, F.getRawPrefix() + "§aSwitching from §f" + current.getName() + " §ato §f" + ds.getName() + "§a.");
 
                             plugin.initializeDataStore(ds.getName(), true);
                             try {
@@ -413,13 +414,13 @@ public class CurrencyCommand implements CommandExecutor {
                             for (Player players : Bukkit.getOnlinePlayers()) {
                                 plugin.getDataStore().loadAccount(players.getUniqueId(), account -> plugin.getAccountManager().add(account));
                             }
-                            sender.sendMessage(F.getPrefix() + "§aLoaded all accounts for online players.");
+                            ModernChat.send(sender, F.getRawPrefix() + "§aLoaded all accounts for online players.");
                         }
                     } else {
-                        sender.sendMessage(F.getCurrencyUsage_Backend());
+                        ModernChat.send(sender, F.getCurrencyUsage_Backend());
                     }
                 } else {
-                    sender.sendMessage(F.getUnknownSubCommand());
+                    ModernChat.send(sender, F.getUnknownSubCommand());
                 }
             }
 

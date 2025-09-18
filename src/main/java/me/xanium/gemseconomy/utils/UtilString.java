@@ -11,6 +11,7 @@ package me.xanium.gemseconomy.utils;
 import com.google.common.collect.Lists;
 import me.xanium.gemseconomy.file.F;
 import org.bukkit.command.CommandSender;
+import me.xanium.gemseconomy.utils.ModernChat;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -27,7 +28,7 @@ public class UtilString {
             }
 
         } catch (NumberFormatException ex) {
-            sender.sendMessage(F.getPrefix() + F.getUnvalidAmount());
+            ModernChat.send(sender, F.getPrefix().append(F.getUnvalidAmount()));
             return false;
         }
         return true;
