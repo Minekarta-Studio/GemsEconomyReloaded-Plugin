@@ -192,6 +192,29 @@ public class F {
         return getPrefix().append(ModernChat.MMRC(cfg.getString("Messages.cannotReceiveMoney")));
     }
 
+    public static Component getChequesDisabled() {
+        return getPrefix().append(get("Messages.cheque.disabled"));
+    }
+
+    public static Component getChequeWriteHelp() {
+        return get("Messages.usage.cheque_write");
+    }
+
+    public static Component getInvalidAmount() {
+        return getPrefix().append(get("Messages.invalid_amount"));
+    }
+
+    public static Component getInvalidCurrency() {
+        return getPrefix().append(get("Messages.invalid_currency"));
+    }
+
+    public static Component getChequeWritten() {
+        return getPrefix().append(get("Messages.cheque.written"));
+    }
+
+    public static Component getPlayerOnly() {
+        return getPrefix().append(get("Messages.player_only"));
+    }
 
     public static Component getCurrencyUsage_Create() { return get("Messages.usage.currency_create"); }
     public static Component getCurrencyUsage_Delete() { return get("Messages.usage.currency_delete"); }
