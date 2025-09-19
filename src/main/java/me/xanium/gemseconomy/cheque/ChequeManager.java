@@ -1,16 +1,8 @@
-/*
- * Copyright Xanium Development (c) 2013-2018. All Rights Reserved.
- * Any code contained within this document, and any associated APIs with similar branding
- * are the sole property of Xanium Development. Distribution, reproduction, taking snippets or claiming
- * any contents as your own will break the terms of the license, and void any agreements with you, the third party.
- * Thank you.
- */
-
 package me.xanium.gemseconomy.cheque;
 
 import me.xanium.gemseconomy.GemsEconomy;
 import me.xanium.gemseconomy.currency.Currency;
-import me.xanium.gemseconomy.nbt.NBTItem;
+import me.xanium.gemseconomy.nbt.NBT;
 import me.xanium.gemseconomy.utils.UtilString;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
@@ -27,9 +19,9 @@ public class ChequeManager {
 
     private final GemsEconomy plugin;
     private final ItemStack chequeBaseItem;
-    private final String nbt_issuer = "issuer";
-    private final String nbt_value = "value";
-    private final String nbt_currency = "currency";
+    private final String nbt_issuer = "cheque_issuer";
+    private final String nbt_value = "cheque_value";
+    private final String nbt_currency = "cheque_currency";
 
     public ChequeManager(GemsEconomy plugin) {
         this.plugin = plugin;
@@ -43,61 +35,46 @@ public class ChequeManager {
     }
 
     public ItemStack write(String creatorName, Currency currency, double amount) {
-        if(!currency.isPayable())return null;
-
+        if (!currency.isPayable()) return null;
 
         if (creatorName.equals("CONSOLE")) {
             creatorName = UtilString.colorize(plugin.getConfig().getString("cheque.console_name"));
         }
         List<Component> formatLore = new ArrayList<>();
 
-        for (Component baseLore2 : Objects.requireNonNull(chequeBaseItem.getItemMeta().lore())) {
+        for (Component baseLore2 : Objects.requireNonNull(chequeBaseItem.lore())) {
             formatLore.add(LegacyComponentSerializer.legacyAmpersand().deserialize(LegacyComponentSerializer.legacyAmpersand().serialize(baseLore2).replace("{value}", currency.format(amount)).replace("{player}", creatorName)));
         }
         ItemStack ret = chequeBaseItem.clone();
-        NBTItem nbt = new NBTItem(ret);
-        ItemMeta meta = nbt.getItem().getItemMeta();
+        ItemMeta meta = ret.getItemMeta();
         meta.lore(formatLore);
-        nbt.getItem().setItemMeta(meta);
-        nbt.setString(nbt_issuer, creatorName);
-        nbt.setString(nbt_currency, currency.getPlural());
-        nbt.setString(nbt_value, String.valueOf(amount));
-        return nbt.getItem();
+        ret.setItemMeta(meta);
+
+        ret = NBT.setString(ret, nbt_issuer, creatorName);
+        ret = NBT.setString(ret, nbt_currency, currency.getUuid().toString());
+        ret = NBT.setDouble(ret, nbt_value, amount);
+        return ret;
     }
 
-    public boolean isValid(NBTItem itemstack) {
-        if(itemstack.getItem().getType() != chequeBaseItem.getType())return false;
-        if (itemstack.getString(nbt_value) != null && itemstack.getString(nbt_currency) != null && itemstack.getString(nbt_issuer) != null) {
-
-            Component display = chequeBaseItem.getItemMeta().displayName();
-            ItemMeta meta = itemstack.getItem().getItemMeta();
-
-            if(meta == null) return false;
-
-            if(meta.hasDisplayName() && meta.displayName().equals(display)){
-                if(meta.hasLore() && meta.lore().size() == chequeBaseItem.getItemMeta().lore().size()){
-                    return true;
-                }
-            }
+    public boolean isValid(ItemStack itemstack) {
+        if (itemstack == null || itemstack.getType() != chequeBaseItem.getType()) return false;
+        if (NBT.hasKey(itemstack, nbt_value) && NBT.hasKey(itemstack, nbt_currency) && NBT.hasKey(itemstack, nbt_issuer)) {
+            ItemMeta meta = itemstack.getItemMeta();
+            if (meta == null) return false;
+            return meta.hasDisplayName() && meta.displayName().equals(chequeBaseItem.displayName());
         }
         return false;
     }
 
-    public double getValue(NBTItem itemstack) {
-        if (itemstack.getString(nbt_currency) != null && itemstack.getString(nbt_value) != null) {
-            return Double.parseDouble(itemstack.getString(nbt_value));
-        }
-        return 0;
+    public double getValue(ItemStack itemstack) {
+        Double val = NBT.getDouble(itemstack, nbt_value);
+        return val != null ? val : 0;
     }
 
-    /**
-     *
-     * @param item - The Cheque.
-     * @return - Currency it represents.
-     */
-    public Currency getCurrency(NBTItem item) {
-        if (item.getString(nbt_currency) != null && item.getString(nbt_value) != null) {
-            return plugin.getCurrencyManager().getCurrency(item.getString(nbt_currency));
+    public Currency getCurrency(ItemStack item) {
+        String currencyUuid = NBT.getString(item, nbt_currency);
+        if (currencyUuid != null) {
+            return plugin.getCurrencyManager().getCurrency(currencyUuid);
         }
         return plugin.getCurrencyManager().getDefaultCurrency();
     }
