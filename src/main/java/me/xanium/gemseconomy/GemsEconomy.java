@@ -1,11 +1,3 @@
-/*
- * Copyright Xanium Development (c) 2013-2018. All Rights Reserved.
- * Any code contained within this document, and any associated APIs with similar branding
- * are the sole property of Xanium Development. Distribution, reproduction, taking snippets or claiming
- * any contents as your own will break the terms of the license, and void any agreements with you, the third party.
- * Thank you.
- */
-
 package me.xanium.gemseconomy;
 
 import me.xanium.gemseconomy.account.AccountManager;
@@ -19,12 +11,10 @@ import me.xanium.gemseconomy.data.YamlStorage;
 import me.xanium.gemseconomy.file.Configuration;
 import me.xanium.gemseconomy.listeners.EconomyListener;
 import me.xanium.gemseconomy.logging.EconomyLogger;
-import me.xanium.gemseconomy.nbt.NMSVersion;
 import me.xanium.gemseconomy.utils.Metrics;
 import me.xanium.gemseconomy.utils.SchedulerUtils;
 import me.xanium.gemseconomy.utils.ModernChat;
 import me.xanium.gemseconomy.utils.Updater;
-import me.xanium.gemseconomy.utils.UtilServer;
 import me.xanium.gemseconomy.vault.VaultHandler;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -40,7 +30,6 @@ public class GemsEconomy extends JavaPlugin {
     private ChequeManager chequeManager;
     private CurrencyManager currencyManager;
     private VaultHandler vaultHandler;
-    private NMSVersion nmsVersion;
     private Metrics metrics;
     private EconomyLogger economyLogger;
     private UpdateForwarder updateForwarder;
@@ -51,33 +40,6 @@ public class GemsEconomy extends JavaPlugin {
     private boolean cheques = true;
 
     private boolean disabling = false;
-
-    /**
-     * Bug fix Update
-     *
-     * MySQL would not write or read any data from database - Fixed (Some help from @FurryKitten @ github)
-     * Rewritten many parts of loading / saving account data in MySQL.
-     * YAML Storage would cache offline users when adding currency to them - Fixed
-     * Balance Top command has been rewritten to support more efficient SQL queries.
-     * Balance Top cache expiry lowered to 3 minutes from 5.
-     * Added an option to enable/disable cheques in config.
-     * There has also been many internal changes here and there.
-     *
-     * SQLITE Support has been dropped! IF this is relevant for you!
-     * Please change your backend to YAML with the command /currency convert yaml
-     *
-     * THIS UPDATE MODIFIES HOW A PLAYERS BALANCE IS SAVED, ONLY RELEVANT FOR MYSQL USERS!
-     * Please take a backup of your balances & accounts table before you start your server
-     * with this new version of GemsEconomy!
-     * The plugin will automatically alter the old table and add the new column.
-     * When players log in their data will be converted to the new format.
-     * IF you are using mysql, and utilize /baltop command a lot, the baltop might become
-     * inaccurate due to the players need to log on your server before it can read their balances.
-     *
-     * Please let me know if you find bugs!
-     * PM me here @ SpigotMC
-     *
-     */
 
     @Override
     public void onLoad() {
@@ -94,7 +56,6 @@ public class GemsEconomy extends JavaPlugin {
     public void onEnable() {
         instance = this;
 
-        nmsVersion = new NMSVersion();
         accountManager = new AccountManager(this);
         currencyManager = new CurrencyManager(this);
         economyLogger = new EconomyLogger(this);
@@ -140,8 +101,6 @@ public class GemsEconomy extends JavaPlugin {
         if (isVault()) getVaultHandler().unhook();
 
         if (getDataStore() != null) {
-            // Closing the database connection can be a blocking operation.
-            // To prevent the server from hanging on shutdown, we do this asynchronously.
             SchedulerUtils.runAsync(getDataStore()::close);
         }
     }
@@ -150,9 +109,6 @@ public class GemsEconomy extends JavaPlugin {
 
         DataStorage.getMethods().add(new YamlStorage(new File(getDataFolder(), "data.yml")));
         DataStorage.getMethods().add(new MySQLStorage(getConfig().getString("mysql.host"), getConfig().getInt("mysql.port"), getConfig().getString("mysql.database"), getConfig().getString("mysql.username"), getConfig().getString("mysql.password")));
-
-        // Disabled. Not many are using SQLite anyway. And MySQL has much better performance!
-        //DataStorage.getMethods().add(new SQLiteStorage(new File(getDataFolder(), getConfig().getString("sqlite.file"))));
 
         if (strategy != null) {
             dataStorage = DataStorage.getMethod(strategy);
@@ -222,10 +178,6 @@ public class GemsEconomy extends JavaPlugin {
         return economyLogger;
     }
 
-    public NMSVersion getNmsVersion() {
-        return nmsVersion;
-    }
-
     public Metrics getMetrics() {
         return metrics;
     }
@@ -237,7 +189,6 @@ public class GemsEconomy extends JavaPlugin {
     public UpdateForwarder getUpdateForwarder() {
         return updateForwarder;
     }
-
 
     public boolean isDebug() {
         return debug;
