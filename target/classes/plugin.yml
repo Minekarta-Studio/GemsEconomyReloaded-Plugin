@@ -1,5 +1,5 @@
 name: GemsEconomyReloaded
-main: me.xanium.gemseconomy.GemsEconomy
+main: com.minekarta.gemseconomyreloaded.GemsEconomyReloaded
 version: 5.0.0
 author: Minekarta Studio & Jules
 description: 'GemsEconomy Reloaded plugin with modern compatibility.'
@@ -19,15 +19,15 @@ commands:
   currency:
     description: Manage the currencies.
     usage: /currency
-    aliases: [gcurr, gemscurrencies, gcurrency, currencies]
+    aliases: [gcurr, gcurrency, currencies]
   economy:
     description: Give, set or take currency.
     usage: /eco <set|take|give> <account> <amount> (currency)
-    aliases: [geconomy, eco, geco, gemseconomy]
+    aliases: [geco]
   pay:
     description: Pays another account
     usage: /pay <account> <amount> (currency)
-    aliases: [gpay, gemspay]
+    aliases: [gpay]
   cheque:
     usage: /cheque
     description: Write or Redeem a cheque.
@@ -35,4 +35,4 @@ commands:
   exchange:
     usage: /exchange
     description: Exchange currencies.
-    aliases: [gex, gemsexchange, gexchange]
+    aliases: [gex, gexchange]
