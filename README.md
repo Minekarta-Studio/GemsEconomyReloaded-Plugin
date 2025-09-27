@@ -73,28 +73,56 @@ GemsEconomy supports [PlaceholderAPI](https://www.spigotmc.org/resources/placeho
 -   `%gemseconomy_balance_<currency>%` - Shows the player's balance for a specific currency.
 -   `%gemseconomy_balance_<currency>_formatted%` - Shows the formatted balance for a specific currency.
 
-## Developer API
+## For Developers
 
-To use the API, add GemsEconomy as a dependency in your `plugin.yml`.
+To use the API, add GemsEconomyReloaded as a dependency to your project.
 
-**Example:**
+### Maven Dependency
 
+Add the following to your `pom.xml`:
+```xml
+<dependency>
+    <groupId>com.minekarta</groupId>
+    <artifactId>GemsEconomyReloaded</artifactId>
+    <version>5.0.0</version> <!-- Or the latest version -->
+    <scope>provided</scope>
+</dependency>
+```
+*Note: You will need to install the plugin JAR to your local Maven repository or use a system like JitPack.*
+
+### API Usage Example
+
+First, add `GemsEconomyReloaded` to your `plugin.yml`:
+```yml
+depend: [GemsEconomyReloaded]
+```
+
+Then, you can use the API in your plugin:
 ```java
-// Get the API instance
-GemsEconomyAPI api = new GemsEconomyAPI();
+import com.minekarta.gemseconomyreloaded.api.GemsEconomyAPI;
+import com.minekarta.gemseconomyreloaded.currency.Currency;
+import java.util.UUID;
+import org.bukkit.entity.Player;
 
-// Get a player's UUID
-UUID playerUuid = player.getUniqueId();
+public class MyPlugin {
+    public void onSomething(Player player) {
+        // Get the API instance
+        GemsEconomyAPI api = new GemsEconomyAPI();
 
-// Get a specific currency
-Currency currency = api.getCurrency("gems");
+        // Get a player's UUID
+        UUID playerUuid = player.getUniqueId();
 
-if (currency != null) {
-    // Get player's balance
-    double balance = api.getBalance(playerUuid, currency);
-    System.out.println("Balance: " + balance);
+        // Get a specific currency
+        Currency currency = api.getCurrency("gems");
 
-    // Give the player 100 of the currency
-    api.deposit(playerUuid, 100, currency);
+        if (currency != null) {
+            // Get player's balance
+            double balance = api.getBalance(playerUuid, currency);
+            System.out.println("Balance: " + balance);
+
+            // Give the player 100 of the currency
+            api.deposit(playerUuid, 100, currency);
+        }
+    }
 }
 ```
